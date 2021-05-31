@@ -1,1 +1,1 @@
-### Thomas Jefferson Elementary School Dashbaord - Launch 2021 Team 2
+### Thomas Jefferson Elementary School Dashboard - Launch 2021 Team 2
