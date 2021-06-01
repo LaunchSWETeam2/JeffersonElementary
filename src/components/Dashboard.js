@@ -28,6 +28,8 @@ import '../css/dashboard-style.css'
 
 //Components
 import TeacherDirectory from './TeacherDirectory'
+import Calendar from './Calendar'
+import ClassDirectory from './ClassDirectory'
 
 const drawerWidth = 200;
 
@@ -180,7 +182,7 @@ export default function MiniDrawer() {
       
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <TeacherDirectory/>
+        <ClassDirectory/>
       </main>
     </div>
   );
