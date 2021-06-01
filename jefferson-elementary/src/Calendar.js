@@ -5,28 +5,65 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { getEvents } from "./fetch";
+
 const localizer = momentLocalizer(moment);
 
 function CalendarApp() {
   const [data, setData] = useState("");
   const [userInput, setUserInput] = useState("");
   const [event, setEvents] = useState([]);
-  const classes = [];
-  classes.push({
-    id: 1,
-    title: "history101",
-    start: new Date("June 1, 2021 05:24:00"),
-    end: "June 1, 2021 05:40:00",
-    type: "holiday",
-    allDay: "false",
-  });
-  const setEvent = (events) => {
-    setEvents(events);
+  const [name, setName] = useState("");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const [classes, setClasses] = useState([]);
+
+  const createEvent = (title, start, end) => {
+    classes.push({
+      id: 1,
+      title: title,
+      start: start,
+      end: end,
+      type: "event",
+      allDay: "false",
+    });
+    setName("");
+    setStart("");
+    setEnd("");
+    setEvents(classes);
+  };
+
+  const handleChange = (e) => {
+    setName(e.currentTarget.value);
+  };
+  const handleChangeStart = (e) => {
+    setStart(e.currentTarget.value);
+  };
+  const handleChangeEnd = (e) => {
+    setEnd(e.currentTarget.value);
   };
   return (
     <div>
-      <Button onClick={() => setEvent(classes)}>Set Events</Button>
+      <form>
+        <input
+          name="name"
+          placeholder="Event Name"
+          value={name}
+          onChange={handleChange}
+        />
+        <input
+          start="start"
+          placeholder="Start Date"
+          value={start}
+          onChange={handleChangeStart}
+        />
+        <input
+          name="end"
+          placeholder="End Date"
+          value={end}
+          onChange={handleChangeEnd}
+        />
+        <Button onClick={() => createEvent(name, start, end)}>Add Event</Button>
+      </form>
       <Calendar
         localizer={localizer}
         events={event}
