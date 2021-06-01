@@ -26,6 +26,9 @@ import SchoolIcon from '@material-ui/icons/School';
 import Logo from '../images/logo.png'
 import '../css/dashboard-style.css'
 
+//Components
+import TeacherDirectory from './TeacherDirectory'
+
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
@@ -87,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
   },
 }));
 
@@ -174,6 +177,11 @@ export default function MiniDrawer() {
         </List>
         <Divider />
       </Drawer>
+      
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <TeacherDirectory/>
+      </main>
     </div>
   );
 }
