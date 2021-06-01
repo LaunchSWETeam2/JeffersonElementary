@@ -4,6 +4,7 @@ function App() {
   return (
     <div style={{ textAlign: "center" }}>
       <CalendarApp></CalendarApp>
+      <Dashboard />
     </div>
   );
 }
