@@ -82,7 +82,7 @@ const classData=[
     {title:"Art 101", subject:"Art", gradeLevel:2},
     {title:"Physical Health", subject:"Health", gradeLevel:6},
     {title:"World Geography", subject:"Geography", gradeLevel:3},
-    
+
 ]
 
 function ClassDirectory() {
@@ -112,15 +112,15 @@ function ClassDirectory() {
                     </ButtonGroup>
                 </div>
                 <div className="td__table">
-                    <div className="td__table__columns color-theme">
+                    {/* <div className="td__table__columns color-theme">
                         <div className="column-label">Name</div>
                         <div className="column-label">Subject(s)</div>
                         <div className="column-label">Average GPA</div>
                         <div className="spacer"/>
-                    </div>
+                    </div> */}
                     {
                         subjects.map((subject)=>{
-
+                            <ClassAccordion subject={subject}/>
                         })
                     }
                 </div>
@@ -128,7 +128,7 @@ function ClassDirectory() {
     )
 }
 
-function TeacherAccordion({teacher}){
+function ClassAccordion({subject}){
     const accordionStyle={
         width:"100%",
         paddingRight:"20px",//based off td__table__columns
@@ -142,14 +142,11 @@ function TeacherAccordion({teacher}){
                 style={{padding:"0px"}}
             >
                 <div className="td__table__columns">
-                    <div className="column-label">{teacher.name}</div>
-                    <div className="column-label">{teacher.subject}</div>
-                    <div className="column-label">{teacher.avgGPA}</div>
+                    <div className="column-label">{subject}</div>
                 </div>
             </AccordionSummary>
             <AccordionDetails>
                 <div className="accordion-details">
-                    <ProfilePic teacher={teacher}/>
                     Some extra info in a flexbox or grid...
                 </div>
             </AccordionDetails>
