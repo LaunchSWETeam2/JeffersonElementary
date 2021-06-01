@@ -1,0 +1,15 @@
+.appbar {
+  background-color: #0066b3;
+}
+.appbar__title {
+  flex-grow: 1;
+  font-weight: bold;
+}
+.appbar__login {
+  font-weight: bold;
+}
+.appbar__logo {
+  height: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+}

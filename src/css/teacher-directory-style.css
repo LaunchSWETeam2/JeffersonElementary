@@ -1,0 +1,62 @@
+.color-theme {
+  background-color: #0066b3;
+  color: white;
+  font-weight: bold;
+}
+
+.teacher-directory {
+  font-family: Helvetica;
+}
+
+.td__header {
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.td__controller {
+  display: flex;
+  justify-content: space-between;
+  /* background-color: yellow; */
+}
+.td__controller__search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.td__table {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+.td__table__columns {
+  display: flex;
+  justify-items: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.spacer {
+  height: 100%;
+  width: 70px;
+}
+
+.column-label {
+  font-size: 15px;
+  width: 33%;
+  /* text-align: center; */
+}
+.accordion-details {
+  margin: 0;
+}
+
+/* Profile Pic */
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: pink;
+}
