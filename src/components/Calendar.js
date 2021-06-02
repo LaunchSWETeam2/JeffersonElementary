@@ -5,13 +5,10 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { ContactSupportOutlined } from "@material-ui/icons";
 
 const localizer = momentLocalizer(moment);
 
 function CalendarApp() {
-  const [data, setData] = useState("");
-  const [userInput, setUserInput] = useState("");
   const [event, setEvents] = useState([]);
   const [name, setName] = useState("");
   const [start, setStart] = useState("");
@@ -21,6 +18,28 @@ function CalendarApp() {
   const [updateTitle, setUpdateTitle] = useState([]);
   const [updateVal, setUpdateVal] = useState([]);
   const [updateType, setUpdateType] = useState([]);
+
+  const handleChange = (e) => {
+    setName(e.currentTarget.value);
+  };
+  const handleChangeStart = (e) => {
+    setStart(e.currentTarget.value);
+  };
+  const handleChangeEnd = (e) => {
+    setEnd(e.currentTarget.value);
+  };
+  const handleChangeDelete = (e) => {
+    setDelete(e.currentTarget.value);
+  };
+  const handleChangeUpdate = (e) => {
+    setUpdateTitle(e.currentTarget.value);
+  };
+  const handleChangeType = (e) => {
+    setUpdateType(e.currentTarget.value);
+  };
+  const handleChangeUpdateVal = (e) => {
+    setUpdateVal(e.currentTarget.value);
+  };
   const createEvent = (title, start, end) => {
     var val = {
       id: 1,
@@ -55,27 +74,6 @@ function CalendarApp() {
     fetch(`http://localhost:8080/events/read`)
       .then((res) => res.json())
       .then((data) => setEvents(data));
-  };
-  const handleChange = (e) => {
-    setName(e.currentTarget.value);
-  };
-  const handleChangeStart = (e) => {
-    setStart(e.currentTarget.value);
-  };
-  const handleChangeEnd = (e) => {
-    setEnd(e.currentTarget.value);
-  };
-  const handleChangeDelete = (e) => {
-    setDelete(e.currentTarget.value);
-  };
-  const handleChangeUpdate = (e) => {
-    setUpdateTitle(e.currentTarget.value);
-  };
-  const handleChangeType = (e) => {
-    setUpdateType(e.currentTarget.value);
-  };
-  const handleChangeUpdateVal = (e) => {
-    setUpdateVal(e.currentTarget.value);
   };
   const deleteEvent = (e) => {
     var id = deleteEvents;
@@ -127,6 +125,9 @@ function CalendarApp() {
     })
       .then((res) => res.json())
       .then((data) => console.log(data));
+    setUpdateTitle("");
+    setUpdateType("");
+    setUpdateVal("");
   };
 
   return (
@@ -153,15 +154,7 @@ function CalendarApp() {
         <Button onClick={() => createEvent(name, start, end)}>Add Event</Button>
         <Button onClick={handleSubmitEvents}>Set Events</Button>
       </form>
-      <form>
-        <input
-          name="delete"
-          placeholder="Title of event to delete"
-          value={deleteEvents}
-          onChange={handleChangeDelete}
-        />
-        <Button onClick={deleteEvent}>Delete Event</Button>
-      </form>
+
       <form>
         <input
           name="delte"
@@ -191,6 +184,15 @@ function CalendarApp() {
         defaultView="week"
         culture="fr"
       />
+      <form>
+        <input
+          name="delete"
+          placeholder="Title of event to delete"
+          value={deleteEvents}
+          onChange={handleChangeDelete}
+        />
+        <Button onClick={deleteEvent}>Delete Event</Button>
+      </form>
     </div>
   );
 }
