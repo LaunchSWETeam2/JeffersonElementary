@@ -44,10 +44,10 @@ function CalendarApp() {
     var val = {
       id: 1,
       title: title,
-      start: start,
-      end: end,
+      start: new Date(start),
+      end: new Date(end),
       type: "event",
-      allDay: "true",
+      allDay: "false",
     };
 
     var data = JSON.stringify(val);
@@ -182,7 +182,8 @@ function CalendarApp() {
         startAccessor="start"
         endAccessor="end"
         defaultView="week"
-        culture="fr"
+        defaultDate={moment().toDate()}
+        style={{ height: 500 }}
       />
       <form>
         <input
