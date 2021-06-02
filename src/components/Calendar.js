@@ -16,7 +16,7 @@ function CalendarApp() {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [classes, setClasses] = useState([]);
-
+  const [deleteEvents, setDelete] = useState([]);
   const createEvent = (title, start, end) => {
     var val = {
       id: 1,
@@ -61,9 +61,36 @@ function CalendarApp() {
   const handleChangeEnd = (e) => {
     setEnd(e.currentTarget.value);
   };
+  const handleChangeDelete = (e) => {
+    setDelete(e.currentTarget.value);
+  };
+  const deleteEvent = (e) => {
+    var id = deleteEvents;
+    // e.preventDefault();
+    for (var i = 0; i < event.length; i++) {
+      if (
+        typeof event[i].items != "undefined" &&
+        event[i].title === deleteEvents
+      ) {
+        id = event[i].id;
+      }
+    }
+
+    // console.log(id);
+    fetch(`http://localhost:8080/events/delete/${deleteEvents}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title: id }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+    setUserInput("");
+  };
+
   return (
     <div>
-      <Button onClick={handleSubmitEvents}>Set Events</Button>
       <form>
         <input
           name="name"
@@ -84,6 +111,16 @@ function CalendarApp() {
           onChange={handleChangeEnd}
         />
         <Button onClick={() => createEvent(name, start, end)}>Add Event</Button>
+        <Button onClick={handleSubmitEvents}>Set Events</Button>
+      </form>
+      <form>
+        <input
+          name="delte"
+          placeholder="Title of event to delete"
+          value={deleteEvents}
+          onChange={handleChangeDelete}
+        />
+        <Button onClick={deleteEvent}>Delete Event</Button>
       </form>
       <Calendar
         localizer={localizer}
