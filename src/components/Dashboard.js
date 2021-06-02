@@ -32,6 +32,9 @@ import Calendar from './Calendar'
 import ClassDirectory from './ClassDirectory'
 import StudentDirectory from './StudentDirectory'
 
+import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
@@ -101,6 +104,7 @@ export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
 
   const fontStyle={
       fontWeight:"bold"
@@ -115,78 +119,92 @@ export default function MiniDrawer() {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                className={clsx(classes.menuButton, {
-                [classes.hide]: open,
-                })}
-            >
-            <MenuIcon />
-            </IconButton>
-            <img className="appbar__logo" src={Logo}/>
-            <Typography style={fontStyle} className="appbar__title" variant="h6">
-                T.J Elementary School Admin Dashboard
-            </Typography>
-            <Button style={fontStyle} className="appbar__login" color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
+    
+      <div className={classes.root}>
+        <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}
+        >
+          <Toolbar>
+              <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  edge="start"
+                  className={clsx(classes.menuButton, {
+                  [classes.hide]: open,
+                  })}
+              >
+              <MenuIcon />
+              </IconButton>
+              <img className="appbar__logo" src={Logo}/>
+              <Typography style={fontStyle} className="appbar__title" variant="h6">
+                  T.J Elementary School Admin Dashboard
+              </Typography>
+              <Button style={fontStyle} className="appbar__login" color="inherit">Login</Button>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-            <ListItem button key={"Teachers"}>
+          })}
+          classes={{
+            paper: clsx({
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            }),
+          }}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            <ListItem button key={"Teachers"} onClick={() => {
+              history.push('teacherspage');
+            }}>
                 <ListItemIcon><FaceIcon /></ListItemIcon>
                 <ListItemText primary={"Teachers"} />
             </ListItem>
-            <ListItem button key={"Students"}>
+            <ListItem button key={"Students"} onClick={() => {
+              history.push('/studentspage');
+            }}>
                 <ListItemIcon><SchoolIcon /></ListItemIcon>
                 <ListItemText primary={"Students"} />
             </ListItem>
-            <ListItem button key={"Classes"}>
+            <ListItem button key={"Classes"} onClick={() => {
+              history.push('/classespage');
+            }}>
                 <ListItemIcon><ClassIcon /></ListItemIcon>
                 <ListItemText primary={"Classes"} />
             </ListItem>
-            <ListItem button key={"Calendar"}>
+            <ListItem button key={"Calendar"} onClick={() => {
+              history.push('/calendarpage');
+            }}>
                 <ListItemIcon><CalendarTodayIcon /></ListItemIcon>
                 <ListItemText primary={"Calendar"} />
             </ListItem>
-        </List>
-        <Divider />
-      </Drawer>
-      
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <ClassDirectory/>
-        <TeacherDirectory/>
-        <StudentDirectory/>
-      </main>
-    </div>
+          </List>
+          <Divider />
+        </Drawer>
+        
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <div>
+            <Switch>
+              <Route exact path='/teacherspage' exact component={TeacherDirectory}/>
+              <Route exact path='/studentspage' component={StudentDirectory}/>
+              <Route exact path='/classespage' component={ClassDirectory}/>
+              <Route exact path='/calendarpage' component={Calendar}/>
+            </Switch>
+          </div>
+        </main>
+      </div>
   );
 }

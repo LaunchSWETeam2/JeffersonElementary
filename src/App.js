@@ -6,13 +6,14 @@ import Dashboard from "./components/Dashboard";
 import Homepage from "./components/Homepage";
 import Class from "./components/Class";
 
+import {BrowserRouter as Router} from 'react-router-dom';
+
 function App() {
   return (
     <div>
-      <Homepage />
-      <Dashboard />
-      <CalendarApp />
-      <Class />
+      <Router>
+        <Dashboard/>
+      </Router>
     </div>
   );
 }
