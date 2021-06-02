@@ -18,20 +18,40 @@ function CalendarApp() {
   const [classes, setClasses] = useState([]);
 
   const createEvent = (title, start, end) => {
-    classes.push({
+    var val = {
       id: 1,
       title: title,
       start: start,
       end: end,
       type: "event",
       allDay: "true",
-    });
+    };
+
+    var data = JSON.stringify(val);
+    var string = val.toString();
+    console.log(string);
+    console.log(data);
+    fetch(`http://localhost:8080/events/add`, {
+      method: "POST",
+      body: data,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => console.log(result));
+
     setName("");
     setStart("");
     setEnd("");
     setEvents(classes);
   };
-
+  const handleSubmitEvents = () => {
+    fetch(`http://localhost:8080/events/read`)
+      .then((res) => res.json())
+      .then((data) => setEvents(data));
+  };
   const handleChange = (e) => {
     setName(e.currentTarget.value);
   };
@@ -43,6 +63,7 @@ function CalendarApp() {
   };
   return (
     <div>
+      <Button onClick={handleSubmitEvents}>Set Events</Button>
       <form>
         <input
           name="name"
