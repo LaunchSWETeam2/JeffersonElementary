@@ -1,3 +1,5 @@
+var db = require('../firebase')
+const teachersRef = db.collection('teachers')
 var express = require("express")
 var router = express.Router();
 
