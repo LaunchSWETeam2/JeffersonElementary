@@ -4,6 +4,7 @@ import CalendarApp from "./components/Calendar.js";
 //testing
 import Dashboard from "./components/Dashboard";
 import Homepage from "./components/Homepage";
+import Class from "./components/Class";
 
 function App() {
   return (
