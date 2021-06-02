@@ -5,6 +5,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { ContactSupportOutlined } from "@material-ui/icons";
 
 const localizer = momentLocalizer(moment);
 
@@ -17,6 +18,9 @@ function CalendarApp() {
   const [end, setEnd] = useState("");
   const [classes, setClasses] = useState([]);
   const [deleteEvents, setDelete] = useState([]);
+  const [updateTitle, setUpdateTitle] = useState([]);
+  const [updateVal, setUpdateVal] = useState([]);
+  const [updateType, setUpdateType] = useState([]);
   const createEvent = (title, start, end) => {
     var val = {
       id: 1,
@@ -29,8 +33,8 @@ function CalendarApp() {
 
     var data = JSON.stringify(val);
     var string = val.toString();
-    console.log(string);
-    console.log(data);
+    // console.log(string);
+    //console.log(data);
     fetch(`http://localhost:8080/events/add`, {
       method: "POST",
       body: data,
@@ -64,8 +68,18 @@ function CalendarApp() {
   const handleChangeDelete = (e) => {
     setDelete(e.currentTarget.value);
   };
+  const handleChangeUpdate = (e) => {
+    setUpdateTitle(e.currentTarget.value);
+  };
+  const handleChangeType = (e) => {
+    setUpdateType(e.currentTarget.value);
+  };
+  const handleChangeUpdateVal = (e) => {
+    setUpdateVal(e.currentTarget.value);
+  };
   const deleteEvent = (e) => {
     var id = deleteEvents;
+
     // e.preventDefault();
     for (var i = 0; i < event.length; i++) {
       if (
@@ -86,7 +100,33 @@ function CalendarApp() {
     })
       .then((res) => res.json())
       .then((data) => console.log(data));
-    setUserInput("");
+    setDelete("");
+  };
+  const updateEvent = (e) => {
+    var id = deleteEvents;
+    // e.preventDefault();
+    for (var i = 0; i < event.length; i++) {
+      if (
+        typeof event[i].items != "undefined" &&
+        event[i].title === updateTitle
+      ) {
+        id = event[i].id;
+      }
+    }
+
+    fetch(`http://localhost:8080/events/update/${updateTitle}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: updateTitle,
+        type: updateType,
+        val: updateVal,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   };
 
   return (
@@ -115,12 +155,33 @@ function CalendarApp() {
       </form>
       <form>
         <input
-          name="delte"
+          name="delete"
           placeholder="Title of event to delete"
           value={deleteEvents}
           onChange={handleChangeDelete}
         />
         <Button onClick={deleteEvent}>Delete Event</Button>
+      </form>
+      <form>
+        <input
+          name="delte"
+          placeholder="Title of the event to be updated"
+          value={updateTitle}
+          onChange={handleChangeUpdate}
+        />
+        <input
+          name="field"
+          placeholder="Field to update (title, start, end)"
+          value={updateType}
+          onChange={handleChangeType}
+        />
+        <input
+          name="newVal"
+          placeholder="What should it be set to?"
+          value={updateVal}
+          onChange={handleChangeUpdateVal}
+        />
+        <Button onClick={() => updateEvent()}>Update Event</Button>
       </form>
       <Calendar
         localizer={localizer}
