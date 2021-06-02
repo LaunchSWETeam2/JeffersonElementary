@@ -32,7 +32,7 @@ import Calendar from './Calendar'
 import ClassDirectory from './ClassDirectory'
 import StudentDirectory from './StudentDirectory'
 
-import { BrowserRouter as Route, Switch } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 const drawerWidth = 200;
@@ -167,7 +167,7 @@ export default function MiniDrawer() {
           <Divider />
           <List>
             <ListItem button key={"Teachers"} onClick={() => {
-              history.push('/teacherspage')
+              history.push('teacherspage');
             }}>
                 <ListItemIcon><FaceIcon /></ListItemIcon>
                 <ListItemText primary={"Teachers"} />
@@ -183,8 +183,7 @@ export default function MiniDrawer() {
             }}>
                 <ListItemIcon><ClassIcon /></ListItemIcon>
                 <ListItemText primary={"Classes"} />
-             </ListItem>
-
+            </ListItem>
             <ListItem button key={"Calendar"} onClick={() => {
               history.push('/calendarpage');
             }}>
