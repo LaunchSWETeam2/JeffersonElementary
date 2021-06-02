@@ -1,10 +1,19 @@
+:root {
+  --main-bg-color: #0066b3;
+  --main-font-color: white;
+  --main-font-weight: bold;
+}
 .color-theme {
-  background-color: #0066b3;
-  color: white;
-  font-weight: bold;
+  background-color: var(--main-bg-color);
+  color: var(--main-font-color);
+  font-weight: var(--main-font-weight);
 }
 
 .teacher-directory {
+  font-family: Helvetica;
+}
+
+.student-directory {
   font-family: Helvetica;
 }
 
@@ -59,4 +68,20 @@
   height: 80px;
   border-radius: 50%;
   background-color: pink;
+}
+
+/* Class Directory Specific styling */
+.class-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.class-title-container {
+  flex: 50%;
+  flex-grow: 0;
+}
+.class-title-button-container {
+  margin: 1px;
 }
