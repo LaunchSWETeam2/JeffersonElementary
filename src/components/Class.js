@@ -91,7 +91,6 @@ const Class = () => {
               onAdd={onAdd}
             />
           );
-          // return <p>{s.name}</p>;
         })}
       </div>
     </div>
