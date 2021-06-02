@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import TeacherDialog from './TeacherDialog'
 import '../css/teacher-directory-style.css';
 import {
     Button,
@@ -7,7 +8,6 @@ import {
     Accordion,
     AccordionSummary,
     AccordionDetails,
-    Typography,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -16,12 +16,14 @@ import axios from 'axios';
 //To do extra:
 //Autocomplete search
 //Idea: Scrape uva profs
+//AI generated faces for profile pics
 
 const FACE_API_KEY = process.env.REACT_APP_FACE_API_KEY;
 const placeholderImg = "https://images.generated.photos/qo-JFI66icV5qr_zT06omPDFsc179J8FhKR3ZoxopQo/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA4ODg2NDRfMDE1/MjU1NV8wODIwNTgz/LmpwZw.jpg"
 function TeacherDirectory() {
     const [teacherData, setTeacherData] = useState([])
-    const [faceUrl, setFaceURL] = useState("")
+    // const [faceUrl, setFaceURL] = useState("")
+    const [openForm, setOpenForm] = useState(false)
     const buttonGroupStyle={
         backgroundColor:"#004981",
         borderWidth:"0px",
@@ -50,22 +52,29 @@ function TeacherDirectory() {
             })
     }
 
-    const fetchFace = () =>{
-        const url = new URL("https://api.generated.photos/api/v1/faces");
-        url.searchParams.append('api_key', FACE_API_KEY)
-        url.searchParams.append("order_by", 'random')
-        url.searchParams.append('per_page', 10)
-        url.searchParams.append('age','young-adult')
-        console.log(url.toString())
-        axios.get(url)
-            .then(response=>{
-                const face = response.data.faces[0].urls[4]["512"]
-                setFaceURL(face)
-            })
-            .catch(err=>{
-                console.log("Fetch Face Error: ", err)
-            })
+    const handleOpenForm = () =>{
+        setOpenForm(true)
     }
+    const handleCloseForm = () =>{
+        setOpenForm(false)
+    }
+
+    // const fetchFace = () =>{
+    //     const url = new URL("https://api.generated.photos/api/v1/faces");
+    //     url.searchParams.append('api_key', FACE_API_KEY)
+    //     url.searchParams.append("order_by", 'random')
+    //     url.searchParams.append('per_page', 100)
+    //     url.searchParams.append('age','young-adult')
+    //     console.log(url.toString())
+    //     axios.get(url)
+    //         .then(response=>{
+    //             const face = response.data.faces[0].urls[4]["512"]
+    //             setFaceURL(face)
+    //         })
+    //         .catch(err=>{
+    //             console.log("Fetch Face Error: ", err)
+    //         })
+    // }
 
     return (
         <div className="teacher-directory">
@@ -76,7 +85,9 @@ function TeacherDirectory() {
                         <Button><SearchIcon/></Button>
                     </div>
                     <ButtonGroup variant="contained" aria-label="teacher-directory-controls">
-                        <Button style={buttonGroupStyle}>Add</Button>
+                        <Button onClick={handleOpenForm} style={buttonGroupStyle}>Add</Button>
+                        <TeacherDialog open={openForm} handleClose={handleCloseForm}/>
+
                         <Button style={buttonGroupStyle}>Select</Button>
                         <Button style={buttonGroupStyle}>Delete</Button>
                     </ButtonGroup>
@@ -99,6 +110,7 @@ function TeacherDirectory() {
     )
 }
 
+
 function TeacherAccordion({teacher, faceUrl}){
     const accordionStyle={
         width:"100%",
@@ -118,24 +130,19 @@ function TeacherAccordion({teacher, faceUrl}){
                 </div>
             </AccordionSummary>
             <AccordionDetails>
-                <ProfilePic pic={faceUrl}/>
-                <div className="accordion-details">
-                    <h4>Age: {teacher.age}</h4>
-                    <h4>Gender: {teacher.gender}</h4>
-                    <h4>Rating: {teacher.rating}</h4>
-                    <h4>Email: {teacher.contact.email}</h4>
-                    <h4>Phone: {teacher.contact.phone}</h4>
+                <div className="accordion-container">
+                    <img className="profile-pic" src={faceUrl}/>
+                    <div className="accordion-details">
+                        <h4>Age: {teacher.age}</h4>
+                        <h4>Gender: {teacher.gender}</h4>
+                        {/* <h4>Rating: {teacher.rating}</h4> */}
+                        <h4>Email: {teacher.contact.email}</h4>
+                        <h4>Phone: {teacher.contact.phone}</h4>
+                    </div>
                 </div>
             </AccordionDetails>
         </Accordion>
     )
 }
-
-function ProfilePic({pic}){
-    return(
-        <img className="profile-pic" src={pic}/>
-    )
-}
-
 
 export default TeacherDirectory

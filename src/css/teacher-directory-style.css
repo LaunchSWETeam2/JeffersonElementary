@@ -60,10 +60,15 @@
 }
 
 /* Teacher Accordion Styling */
+.accordion-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 
 .profile-pic {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   background-color: pink;
 }
@@ -77,6 +82,8 @@
 }
 h4 {
   margin: 3px;
+  font-weight: lighter;
+  color: rgb(85, 85, 85);
 }
 /* Class Directory Specific styling */
 .class-container {
@@ -92,4 +99,21 @@ h4 {
 }
 .class-title-button-container {
   margin: 1px;
+}
+
+/* Teacher Dialog Styling */
+.dialog-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.dialog-form-element {
+  padding: 10px;
+  flex: 30%;
+}
+
+.full {
+  flex: 100%;
 }
