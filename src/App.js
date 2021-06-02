@@ -8,9 +8,9 @@ import Homepage from './components/Homepage'
 function App() {
   return (
     <div>
-      <Homepage/>
+      {/* <Homepage/> */}
       <Dashboard/>
-      <CalendarApp/>
+      {/* <CalendarApp/> */}
     </div>
   );
 }

@@ -183,9 +183,9 @@ export default function MiniDrawer() {
       
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <ClassDirectory/>
+        {/* <ClassDirectory/> */}
         <TeacherDirectory/>
-        <StudentDirectory/>
+        {/* <StudentDirectory/> */}
       </main>
     </div>
   );

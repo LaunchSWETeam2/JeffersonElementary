@@ -55,21 +55,29 @@
 
 .column-label {
   font-size: 15px;
-  width: 33%;
+  flex: 50%;
   /* text-align: center; */
 }
-.accordion-details {
-  margin: 0;
-}
 
-/* Profile Pic */
+/* Teacher Accordion Styling */
+
 .profile-pic {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background-color: pink;
 }
-
+.accordion-details {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-left: 20px;
+  font-size: 13px;
+}
+h4 {
+  margin: 3px;
+}
 /* Class Directory Specific styling */
 .class-container {
   display: flex;
