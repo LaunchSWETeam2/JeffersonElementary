@@ -1,6 +1,6 @@
-import React from 'react'
-import '../css/teacher-directory-style.css'
-
+import React, { useEffect, useState } from 'react';
+import TeacherDialog from './TeacherDialog'
+import '../css/teacher-directory-style.css';
 import {
     Button,
     ButtonGroup,
@@ -8,62 +8,22 @@ import {
     Accordion,
     AccordionSummary,
     AccordionDetails,
-    Typography,
-} from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search'
+} from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import axios from 'axios';
 //To do extra:
 //Autocomplete search
 //Idea: Scrape uva profs
+//AI generated faces for profile pics
 
-//note: subject will be a list
-const testData=[
-    {
-        name:"Megan Ryals",
-        subject: "Applied Math",
-        avgGPA: 3.2,
-        gender:"Female",
-    },{
-        name:"Christopher Hellings",
-        subject: "Applied Math",
-        avgGPA: 3.2,
-        gender:"Male",
-    },
-    {
-        name:"Mark Sheriff",
-        subject: "Computer Science",
-        avgGPA: 3.4,
-        gender:"Male",
-    },
-    {
-        name:"Aaron Bloomfield",
-        subject: "Computer Science",
-        avgGPA: 3.2,
-        gender:"Male",
-    },
-    {
-        name:"Nathan Brunelle",
-        subject: "Computer Science",
-        avgGPA: 3.3,
-        gender:"Male",
-    },
-    {
-        name:"Christopher Mauzrek",
-        subject: "Psychology",
-        avgGPA: 3.6,
-        gender:"Male",
-    },    
-    {
-        name:"Bob Ross",
-        subject: "Art",
-        avgGPA: 4.0,
-        gender:"Male",
-    }
-]
-
-
+const FACE_API_KEY = process.env.REACT_APP_FACE_API_KEY;
+const placeholderImg = "https://images.generated.photos/qo-JFI66icV5qr_zT06omPDFsc179J8FhKR3ZoxopQo/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA4ODg2NDRfMDE1/MjU1NV8wODIwNTgz/LmpwZw.jpg"
 function TeacherDirectory() {
+    const [teacherData, setTeacherData] = useState([])
+    // const [faceUrl, setFaceURL] = useState("")
+    const [openForm, setOpenForm] = useState(false)
     const buttonGroupStyle={
         backgroundColor:"#004981",
         borderWidth:"0px",
@@ -75,6 +35,47 @@ function TeacherDirectory() {
         borderRadius:"10px",
         padding:"5px",
     }
+
+    useEffect(()=>{
+        fetchTeacherData()
+        // fetchFace()//only 50 requests. Store data while you can...
+    }, [])
+
+    const fetchTeacherData = () =>{
+        const url = new URL("http://localhost:8080/teachers/read");
+        axios.get(url.toString())
+            .then(response=>{
+                setTeacherData(response.data)
+            })
+            .catch(err=>{
+                console.log("Fetch Teacher Error: ", err)
+            })
+    }
+
+    const handleOpenForm = () =>{
+        setOpenForm(true)
+    }
+    const handleCloseForm = () =>{
+        setOpenForm(false)
+    }
+
+    // const fetchFace = () =>{
+    //     const url = new URL("https://api.generated.photos/api/v1/faces");
+    //     url.searchParams.append('api_key', FACE_API_KEY)
+    //     url.searchParams.append("order_by", 'random')
+    //     url.searchParams.append('per_page', 100)
+    //     url.searchParams.append('age','young-adult')
+    //     console.log(url.toString())
+    //     axios.get(url)
+    //         .then(response=>{
+    //             const face = response.data.faces[0].urls[4]["512"]
+    //             setFaceURL(face)
+    //         })
+    //         .catch(err=>{
+    //             console.log("Fetch Face Error: ", err)
+    //         })
+    // }
+
     return (
         <div className="teacher-directory">
             <h2 className="td__header">Teacher Directory</h2>
@@ -84,7 +85,9 @@ function TeacherDirectory() {
                         <Button><SearchIcon/></Button>
                     </div>
                     <ButtonGroup variant="contained" aria-label="teacher-directory-controls">
-                        <Button style={buttonGroupStyle}>Add</Button>
+                        <Button onClick={handleOpenForm} style={buttonGroupStyle}>Add</Button>
+                        <TeacherDialog open={openForm} handleClose={handleCloseForm}/>
+
                         <Button style={buttonGroupStyle}>Select</Button>
                         <Button style={buttonGroupStyle}>Delete</Button>
                     </ButtonGroup>
@@ -93,13 +96,12 @@ function TeacherDirectory() {
                     <div className="td__table__columns color-theme">
                         <div className="column-label">Name</div>
                         <div className="column-label">Subject(s)</div>
-                        <div className="column-label">Average GPA</div>
                         <div className="spacer"/>
                     </div>
                     {
-                        testData.map((teacher)=>{
+                        teacherData.map((teacher)=>{
                             return(
-                                <TeacherAccordion teacher={teacher}/>             
+                                <TeacherAccordion key={teacher.id} teacher={teacher} faceUrl={placeholderImg}/>             
                             )
                         })
                     }
@@ -108,7 +110,8 @@ function TeacherDirectory() {
     )
 }
 
-function TeacherAccordion({teacher}){
+
+function TeacherAccordion({teacher, faceUrl}){
     const accordionStyle={
         width:"100%",
         paddingRight:"20px",//based off td__table__columns
@@ -123,25 +126,23 @@ function TeacherAccordion({teacher}){
             >
                 <div className="td__table__columns">
                     <div className="column-label">{teacher.name}</div>
-                    <div className="column-label">{teacher.subject}</div>
-                    <div className="column-label">{teacher.avgGPA}</div>
+                    <div className="column-label">{teacher.subjects.join(", ")}</div>
                 </div>
             </AccordionSummary>
             <AccordionDetails>
-                <div className="accordion-details">
-                    <ProfilePic teacher={teacher}/>
-                    Some extra info in a flexbox or grid...
+                <div className="accordion-container">
+                    <img className="profile-pic" src={faceUrl}/>
+                    <div className="accordion-details">
+                        <h4>Age: {teacher.age}</h4>
+                        <h4>Gender: {teacher.gender}</h4>
+                        {/* <h4>Rating: {teacher.rating}</h4> */}
+                        <h4>Email: {teacher.contact.email}</h4>
+                        <h4>Phone: {teacher.contact.phone}</h4>
+                    </div>
                 </div>
             </AccordionDetails>
         </Accordion>
     )
 }
-
-function ProfilePic({teacher}){
-    return(
-        <img className="profile-pic" src="http://placehold.it/100x100"/>
-    )
-}
-
 
 export default TeacherDirectory
