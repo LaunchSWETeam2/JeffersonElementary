@@ -32,7 +32,7 @@ import Calendar from './Calendar'
 import ClassDirectory from './ClassDirectory'
 import StudentDirectory from './StudentDirectory'
 
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import { BrowserRouter as Route, Switch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 const drawerWidth = 200;
@@ -166,38 +166,31 @@ export default function MiniDrawer() {
           </div>
           <Divider />
           <List>
-            {/*<Link to='/teacherspage' style={{ color: "black", textDecoration: "none"}}>*/}
-                <ListItem button key={"Teachers"} onClick={() => {
-                  history.push('/teacherspage')
-                }}>
-                    <ListItemIcon><FaceIcon /></ListItemIcon>
-                    <ListItemText primary={"Teachers"} />
-                </ListItem>
-              {/*</Link>*/}
-              {/*<Link to='/studentspage' style={{ color: "black", textDecoration: "none"}}>*/}
-                <ListItem button key={"Students"} onClick={() => {
-                  history.push('/studentspage');
-                }}>
-                    <ListItemIcon><SchoolIcon /></ListItemIcon>
-                    <ListItemText primary={"Students"} />
-                </ListItem>
-              {/*</Link>*/}
-              {/*<Link to='/classespage' style={{ color: "black", textDecoration: "none"}}>*/}
-                <ListItem button key={"Classes"} onClick={() => {
-                  history.push('/classespage');
-                }}>
-                    <ListItemIcon><ClassIcon /></ListItemIcon>
-                    <ListItemText primary={"Classes"} />
-                </ListItem>
-              {/*</Link>*/}
-              {/*<Link to='/calendarpage' style={{ color: "black", textDecoration: "none"}}>*/}
-                <ListItem button key={"Calendar"} onClick={() => {
-                  history.push('/calendarpage');
-                }}>
-                    <ListItemIcon><CalendarTodayIcon /></ListItemIcon>
-                    <ListItemText primary={"Calendar"} />
-                </ListItem>
-              {/*</Link>*/}
+            <ListItem button key={"Teachers"} onClick={() => {
+              history.push('/teacherspage')
+            }}>
+                <ListItemIcon><FaceIcon /></ListItemIcon>
+                <ListItemText primary={"Teachers"} />
+            </ListItem>
+            <ListItem button key={"Students"} onClick={() => {
+              history.push('/studentspage');
+            }}>
+                <ListItemIcon><SchoolIcon /></ListItemIcon>
+                <ListItemText primary={"Students"} />
+            </ListItem>
+            <ListItem button key={"Classes"} onClick={() => {
+              history.push('/classespage');
+            }}>
+                <ListItemIcon><ClassIcon /></ListItemIcon>
+                <ListItemText primary={"Classes"} />
+             </ListItem>
+
+            <ListItem button key={"Calendar"} onClick={() => {
+              history.push('/calendarpage');
+            }}>
+                <ListItemIcon><CalendarTodayIcon /></ListItemIcon>
+                <ListItemText primary={"Calendar"} />
+            </ListItem>
           </List>
           <Divider />
         </Drawer>
