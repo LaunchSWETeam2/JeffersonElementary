@@ -1,7 +1,7 @@
 var express = require("express")
 var router = express.Router();
 
-router.get("/classes", async (req,res)=>{
+router.get("/", async (req,res)=>{
     res.send("Classes API working properly")
 })
 

@@ -1,3 +1,4 @@
+//guide to routing: https://expressjs.com/en/guide/routing.html
 var express = require('express');
 const cors = require('cors');
 const app = express();
