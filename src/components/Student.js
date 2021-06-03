@@ -5,8 +5,8 @@ import EditStudent from "./EditStudent";
 
 const Student = ({ name, grade, onDelete, onAdd }) => {
   const [toggle, setToggle] = useState(false);
-  const [studentName, setStudentName] = useState("test name");
-  const [newGrade, setNewGrade] = useState("A");
+  const [studentName, setStudentName] = useState(name);
+  const [newGrade, setNewGrade] = useState(grade);
 
   const changeName = () => {};
 
