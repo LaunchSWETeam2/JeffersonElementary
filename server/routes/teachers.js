@@ -60,7 +60,7 @@ router.delete("/delete", async(req,res)=>{
     try{
         const id = req.query.id;
         const deleteTeacher = await teachersRef.doc(id).delete();
-        console.log("Deleted book with id: ", id)
+        console.log("Deleted teacher with id: ", id)
         res.sendStatus(200)
     }catch(err){
         console.log("Error: ", err)
