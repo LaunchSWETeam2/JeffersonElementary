@@ -30,13 +30,17 @@ function ClassCreate() {
   const [openU, setOpenU] = React.useState(false);
   const [openD, setOpenD] = React.useState(false);
   const [typeList, setTypeList] = useState([]);
-
+  const [subjectList, setSubjectList] = useState([]);
+  const [idList, setIDList] = useState([]);
   const handleClickOpen = () => {
     if (teacherList.length === 0) {
       fetchTeachers();
     }
     if (studentList.length === 0) {
       fetchStudents();
+    }
+    if (subjectList.length === 0) {
+      fetchSubjects();
     }
     setOpen(true);
   };
@@ -50,10 +54,13 @@ function ClassCreate() {
       typeList.push("Classroom");
       typeList.push("Title");
     }
+    fetchIDS();
 
     setOpenU(true);
   };
   const handleClickOpenD = () => {
+    fetchIDS();
+
     setOpenD(true);
   };
   const handleClose = () => {
@@ -106,9 +113,9 @@ function ClassCreate() {
     setClassNum(e.currentTarget.value);
   };
   const addStudent = () => {
-    console.log(student);
+    // console.log(student);
     students.push(student);
-    console.log(students);
+    //  console.log(students);
   };
   const addTeacher = (val) => {
     setTeacher(val);
@@ -116,26 +123,38 @@ function ClassCreate() {
   const fetchStudents = () => {
     fetch(`http://localhost:8080/students/read`)
       .then((res) => res.json())
-      .then((data) => setStudentList(data)); /*
-    var temp = [];
-    var stud = {
-      name: "John Johny",
-    };
-    temp.push(stud);
-    var stud2 = {
-      name: "Mark Rosewater",
-    };
-    temp.push(stud2);
-    var stud3 = {
-      name: "Rocky Balboa",
-    };
-    temp.push(stud3);
-    setStudentList(temp);*/
+      .then((data) => setStudentList(data));
   };
   const fetchTeachers = () => {
     fetch(`http://localhost:8080/teachers/read`)
       .then((res) => res.json())
       .then((data) => setTeacherList(data));
+  };
+  const fetchClasses = () => {
+    fetch(`http://localhost:8080/classes/read`)
+      .then((res) => res.json())
+      .then((data) => setClasses(data));
+    console.log(classes);
+  };
+  const fetchIDS = () => {
+    fetchClasses();
+    var list = [];
+    console.log(classes);
+    for (var i = 0; i < classes.length; i++) list.push(classes[i].ID);
+    setIDList(list);
+  };
+  const fetchSubjects = () => {
+    var subs = [
+      "Science",
+      "Math",
+      "Art",
+      "History",
+      "English",
+      "Health",
+      "Geography",
+      "Music",
+    ];
+    setSubjectList(subs);
   };
   const createClasses = (
     teacher,
@@ -183,11 +202,7 @@ function ClassCreate() {
     setClassTitle("");
     // setClasses(classes);
   };
-  const handleSubmitClasses = () => {
-    fetch(`http://localhost:8080/classes/read`)
-      .then((res) => res.json())
-      .then((data) => setClasses(data));
-  };
+
   const deleteClass = (e) => {
     var id = deleteVal;
 
@@ -254,6 +269,7 @@ function ClassCreate() {
         aria-labelledby="form-dialog-title"
       >
         <form>
+          Student:
           <Select onChange={handleChangeStudent}>
             {studentList.map((student) => {
               return <option value={student.name}> {student.name} </option>;
@@ -268,28 +284,27 @@ function ClassCreate() {
           </p>
         </form>
         <form>
+          Teacher:
           <Select onChange={handleChange}>
             {teacherList.map((teacher) => {
               return <option value={teacher.name}> {teacher.name} </option>;
             })}
           </Select>
-
-          <Input
-            name="subject"
-            placeholder="Subject"
-            value={subject}
-            onChange={handleChangeSubject}
-          />
-
+          Subject:
+          <Select onChange={handleChangeSubject}>
+            {subjectList.map((subject) => {
+              return <option value={subject}> {subject} </option>;
+            })}
+          </Select>
           <Input
             start="start"
-            placeholder="Start Date"
+            placeholder="Start Date (mm/dd/yyyy)"
             value={start}
             onChange={handleChangeStart}
           />
           <Input
             name="end"
-            placeholder="End Date"
+            placeholder="End Date (mm/dd/yyyy)"
             value={end}
             onChange={handleChangeEnd}
           />
@@ -338,18 +353,13 @@ function ClassCreate() {
         aria-labelledby="form-dialog-title"
       >
         <form>
-          <Input
-            name="ID_Val"
-            placeholder="ID of class to be Updated"
-            value={updateTitle}
-            onChange={handleChangeUpdate}
-          />
-          <Input
-            name="field"
-            placeholder="Field:(Teacher, Subject, Students, Start, End)"
-            value={updateType}
-            onChange={handleChangeType}
-          />
+          ID:
+          <Select onChange={handleChangeUpdate}>
+            {idList.map((id) => {
+              return <option value={id}> {id} </option>;
+            })}
+          </Select>
+          Type:
           <Select onChange={handleChangeType}>
             {typeList.map((type) => {
               return <option value={type}> {type} </option>;
@@ -373,25 +383,16 @@ function ClassCreate() {
         aria-labelledby="form-dialog-title"
       >
         <form>
-          <Input
-            name="delete"
-            placeholder="ID of class to delete"
-            value={deleteVal}
-            onChange={handleChangeDelete}
-          />
+          ID:
+          <Select onChange={handleChangeDelete}>
+            {idList.map((id) => {
+              return <option value={id}> {id} </option>;
+            })}
+          </Select>
           <Button onClick={() => deleteClass()}>Delete Class</Button>
         </form>
       </Dialog>
     </div>
-    /**<Button onClick={handleSubmitClasses}>Display Classes</Button>
-      <p>
-        {classes.map((c) => (
-          <p>
-            {c.Title} Taught By {c.Teacher} With Students {c.Students} In Room
-            {c.Classroom} With ID {c.ID}
-          </p>
-        ))}
-      </p> */
   );
 }
 
