@@ -1,64 +1,61 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 
-import EditStudent from "./EditStudent";
+const EditStudent = ({ onAdd, onDelete, setStudentName, setNewGrade }) => {
+  const [input, setInput] = useState("");
+  const [gradeInput, setGradeInput] = useState("");
 
-const Student = ({ name, grade, onDelete, onAdd }) => {
-  const [toggle, setToggle] = useState(false);
-  const [studentName, setStudentName] = useState("test name");
-  const [newGrade, setNewGrade] = useState("A");
-
-  const changeName = () => {};
+  const onSave = (e) => {
+    e.preventDefault();
+    if (input && gradeInput) {
+      setStudentName(input);
+      if (
+        gradeInput.length <= 1 &&
+        (gradeInput === "A" ||
+          gradeInput === "B" ||
+          gradeInput === "C" ||
+          gradeInput === "D" ||
+          gradeInput == "F")
+      ) {
+        setNewGrade(gradeInput);
+      } else {
+        alert("Enter a valid grade");
+      }
+      setInput("");
+      setGradeInput("");
+    }
+  };
 
   return (
-    <div className="student">
-      <div
-        className="student-header"
-        style={{
-          display: "flex",
-          flexDirection: "wrap",
-          justifyContent: "center",
-          alignItems: "center",
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <TextField
+        placeholder="Edit name"
+        value={input}
+        onChange={(e) => {
+          setInput(e.target.value);
         }}
-      >
-        {/* <p style={{ width: "20%", textAlign: "left" }}>{name}&nbsp;&nbsp;</p> */}
-        <p style={{ width: "20%", textAlign: "left" }}>
-          {studentName}&nbsp;&nbsp;
-        </p>
-        {/* <p style={{ width: "10%" }}>{grade}&nbsp;&nbsp;</p> */}
-        <p style={{ width: "10%" }}>{newGrade}&nbsp;&nbsp;</p>
-
-        {!toggle ? (
-          <Button
-            style={{ background: "#FFBC19", color: "white" }}
-            onClick={() => {
-              setToggle(!toggle);
-            }}
-          >
-            Edit
-          </Button>
-        ) : (
-          <Button
-            style={{ background: "green", color: "white" }}
-            onClick={() => {
-              setToggle(!toggle);
-            }}
-          >
-            Done
-          </Button>
-        )}
-      </div>
-      {toggle && (
-        <EditStudent
-          style={{ width: "33%" }}
-          setStudentName={setStudentName}
-          setNewGrade={setNewGrade}
-          onDelete={onDelete}
-          onAdd={onAdd}
-        />
-      )}
+      />
+      <TextField
+        placeholder="Edit grade"
+        value={gradeInput}
+        onChange={(e) => {
+          setGradeInput(e.target.value);
+        }}
+      />
+      <span className="edit-buttons">
+        <Button onClick={onSave}>Save</Button>
+        <Button onClick={onAdd}>Add</Button>
+        <Button onClick={onDelete}>Delete</Button>
+      </span>
     </div>
   );
 };
 
-export default Student;
+export default EditStudent;
