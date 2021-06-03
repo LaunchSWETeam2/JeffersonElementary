@@ -13,6 +13,8 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
+import {useHistory} from 'react-router-dom';
+
 const grey = "#E5E5E5";
 const blue = "#004981";
 
@@ -74,6 +76,7 @@ const subjects = [
   "Health",
   "Art",
   "Geography",
+  "Music",
 ];
 //make grade level(s) a list. There can be multiple classes (with different times or locations)
 const classData = [
@@ -124,6 +127,7 @@ function ClassDirectory() {
 
   const axios = require('axios');
   const [classList, setClassList] = useState([]);
+ 
 
   useEffect(() => {
       const url = new URL("http://localhost:8080/classes/read");
@@ -163,7 +167,7 @@ function ClassDirectory() {
                 var classes = [];
                 for (var i = 0; i < classList.length; i++) {
                     if (classList[i].Subject === subject) {
-                        classes.push(classList[i].Title);
+                        classes.push(classList[i]);
                     }
                 }
                 return <ClassAccordion {...{ subject, classes }} />;
@@ -196,6 +200,8 @@ function ClassAccordion({ subject, classes }) {
     borderRadius: "5px",
     justifyContent: "flex-start",
   };
+  const history = useHistory();
+
   return (
     <Accordion style={accordionStyle}>
       <AccordionSummary
@@ -215,7 +221,11 @@ function ClassAccordion({ subject, classes }) {
               return (
                 <div className="class-title-container">
                   <div className="class-title-button-container">
-                    <Button style={classButtonStyle}>{aClass}</Button>
+                    <Button style={classButtonStyle} onClick={() => {
+                        var path = "/classpage/";
+                        path = path.concat(aClass.id);
+                        history.push(path);
+                    }}>{aClass.Title}</Button>
                   </div>
                 </div>
               );

@@ -261,6 +261,7 @@ export default function MiniDrawer() {
             </Route>
             <Route exact path="/studentspage" component={StudentDirectory} />
             <Route exact path="/classespage" component={ClassDirectory} />
+            <Route exact path="/classpage/:classid" component={Class} />
             <Route exact path="/calendarpage" component={Calendar} />
           </Switch>
         </div>
