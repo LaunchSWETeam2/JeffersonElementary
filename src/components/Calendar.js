@@ -25,6 +25,13 @@ function CalendarApp() {
   const [open, setOpen] = React.useState(false);
   const [openU, setOpenU] = React.useState(false);
   const [openD, setOpenD] = React.useState(false);
+  useEffect(() => {
+    if (event.length === 0) {
+      console.log("ohboy");
+      fetchEvents();
+    }
+  });
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -94,7 +101,7 @@ function CalendarApp() {
     setEnd("");
     setEvents(classes);
   };
-  const handleSubmitEvents = () => {
+  const fetchEvents = () => {
     fetch(`http://localhost:8080/events/read`)
       .then((res) => res.json())
       .then((data) => setEvents(data));
@@ -236,15 +243,12 @@ function CalendarApp() {
           <Button onClick={deleteEvent}>Delete Event</Button>
         </form>{" "}
       </Dialog>
-      <Button variant="outlined" color="primary" onClick={handleSubmitEvents}>
-        Set Events
-      </Button>
       <Calendar
         localizer={localizer}
         events={event}
         startAccessor="start"
         endAccessor="end"
-        defaultView="week"
+        defaultView="month"
         defaultDate={moment().toDate()}
         style={{ height: 500 }}
       />
