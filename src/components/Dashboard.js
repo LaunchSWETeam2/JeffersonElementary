@@ -22,6 +22,7 @@ import ClassIcon from "@material-ui/icons/Class";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import FaceIcon from "@material-ui/icons/Face";
 import SchoolIcon from "@material-ui/icons/School";
+import HomeIcon from '@material-ui/icons/Home';
 
 import Logo from "../images/logo.png";
 import "../css/dashboard-style.css";
@@ -116,6 +117,7 @@ export default function MiniDrawer() {
 
   const fontStyle = {
     fontWeight: "bold",
+    fontFamily:"Montserrat",
   };
 
   useEffect(() => {
@@ -201,6 +203,19 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
+        <ListItem
+            button
+            key={"Home"}
+            onClick={() => {
+              history.push("/");
+            }}
+          >
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Home"} />
+          </ListItem>
+
           <ListItem
             button
             key={"Teachers"}
