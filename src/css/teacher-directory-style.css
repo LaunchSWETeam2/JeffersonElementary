@@ -10,11 +10,13 @@
 }
 
 .teacher-directory {
-  font-family: Helvetica;
+  font-family: "Montserrat";
+  font-weight: bold;
 }
 
 .student-directory {
-  font-family: Helvetica;
+  font-family: "Montserrat";
+  font-weight: bold;
 }
 
 .td__header {
@@ -38,6 +40,7 @@
   flex-direction: column;
   margin-top: 20px;
   margin-right: 20px;
+  margin-bottom: 200px;
 }
 .td__table__columns {
   display: flex;

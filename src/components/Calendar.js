@@ -5,7 +5,11 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 const localizer = momentLocalizer(moment);
 
 function CalendarApp() {
@@ -18,7 +22,34 @@ function CalendarApp() {
   const [updateTitle, setUpdateTitle] = useState([]);
   const [updateVal, setUpdateVal] = useState([]);
   const [updateType, setUpdateType] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [openU, setOpenU] = React.useState(false);
+  const [openD, setOpenD] = React.useState(false);
+  useEffect(() => {
+    if (event.length === 0) {
+      console.log("ohboy");
+      fetchEvents();
+    }
+  });
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClickOpenU = () => {
+    setOpenU(true);
+  };
+  const handleClickOpenD = () => {
+    setOpenD(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleCloseU = () => {
+    setOpenU(false);
+  };
+  const handleCloseD = () => {
+    setOpenD(false);
+  };
   const handleChange = (e) => {
     setName(e.currentTarget.value);
   };
@@ -70,7 +101,7 @@ function CalendarApp() {
     setEnd("");
     setEvents(classes);
   };
-  const handleSubmitEvents = () => {
+  const fetchEvents = () => {
     fetch(`http://localhost:8080/events/read`)
       .then((res) => res.json())
       .then((data) => setEvents(data));
@@ -132,68 +163,95 @@ function CalendarApp() {
 
   return (
     <div>
-      <form>
-        <input
-          name="name"
-          placeholder="Event Name"
-          value={name}
-          onChange={handleChange}
-        />
-        <input
-          start="start"
-          placeholder="Start Date"
-          value={start}
-          onChange={handleChangeStart}
-        />
-        <input
-          name="end"
-          placeholder="End Date"
-          value={end}
-          onChange={handleChangeEnd}
-        />
-        <Button onClick={() => createEvent(name, start, end)}>Add Event</Button>
-        <Button onClick={handleSubmitEvents}>Set Events</Button>
-      </form>
-
-      <form>
-        <input
-          name="delte"
-          placeholder="Title of the event to be updated"
-          value={updateTitle}
-          onChange={handleChangeUpdate}
-        />
-        <input
-          name="field"
-          placeholder="Field to update (title, start, end)"
-          value={updateType}
-          onChange={handleChangeType}
-        />
-        <input
-          name="newVal"
-          placeholder="What should it be set to?"
-          value={updateVal}
-          onChange={handleChangeUpdateVal}
-        />
-        <Button onClick={() => updateEvent()}>Update Event</Button>
-      </form>
+      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        Add Event
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <form>
+          <Input
+            name="name"
+            placeholder="Event Name"
+            value={name}
+            onChange={handleChange}
+          />
+          <Input
+            start="start"
+            placeholder="Start Date"
+            value={start}
+            onChange={handleChangeStart}
+          />
+          <Input
+            name="end"
+            placeholder="End Date"
+            value={end}
+            onChange={handleChangeEnd}
+          />
+          <Button onClick={() => createEvent(name, start, end)}>
+            Add Event
+          </Button>
+        </form>
+      </Dialog>
+      <Button variant="outlined" color="primary" onClick={handleClickOpenU}>
+        Update Event
+      </Button>
+      <Dialog
+        open={openU}
+        onClose={handleCloseU}
+        aria-labelledby="form-dialog-title"
+      >
+        <form>
+          <Input
+            name="delte"
+            placeholder="Title "
+            value={updateTitle}
+            onChange={handleChangeUpdate}
+          />
+          <Input
+            name="field"
+            placeholder="Field (title, start, end)"
+            value={updateType}
+            onChange={handleChangeType}
+          />
+          <Input
+            name="newVal"
+            placeholder="New Value"
+            value={updateVal}
+            onChange={handleChangeUpdateVal}
+          />
+          <Button onClick={() => updateEvent()}>Update Event</Button>
+        </form>
+      </Dialog>
+      <Button variant="outlined" color="primary" onClick={handleClickOpenD}>
+        Delete Event
+      </Button>
+      <Dialog
+        open={openD}
+        onClose={handleCloseD}
+        aria-labelledby="form-dialog-title"
+      >
+        <form>
+          <Input
+            name="delete"
+            placeholder="Title of event to delete"
+            value={deleteEvents}
+            onChange={handleChangeDelete}
+          />
+          <Button onClick={deleteEvent}>Delete Event</Button>
+        </form>{" "}
+      </Dialog>
       <Calendar
         localizer={localizer}
         events={event}
         startAccessor="start"
         endAccessor="end"
-        defaultView="week"
+        defaultView="month"
         defaultDate={moment().toDate()}
         style={{ height: 500 }}
       />
-      <form>
-        <input
-          name="delete"
-          placeholder="Title of event to delete"
-          value={deleteEvents}
-          onChange={handleChangeDelete}
-        />
-        <Button onClick={deleteEvent}>Delete Event</Button>
-      </form>
     </div>
   );
 }

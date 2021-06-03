@@ -1,0 +1,27 @@
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../images/landing-background.jpg");
+  background-size: cover;
+  border-radius: 0px 0px 10px 10px;
+  height: 700px;
+}
+
+.landing-logo {
+  width: 250px;
+  position: relative;
+  top: -270px;
+  z-index: 2;
+}
+.landing-title {
+  font-family: "Montserrat";
+  text-align: center;
+  background-color: #28282b;
+  color: white;
+  padding: 20px;
+  padding-bottom: 60px;
+  border-radius: 10px 10px 0px 0px;
+  margin-bottom: 0px;
+}

@@ -3,9 +3,12 @@ import { Button, TextField, Link } from "@material-ui/core";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Student from "./Student";
+
+import {useParams} from 'react-router-dom';
 // import EditStudent from "./EditStudent";
 
 const Class = () => {
+  var classID = useParams();
   const testData = [
     {
       name: "Megan Ryals",
@@ -43,12 +46,31 @@ const Class = () => {
       gender: "Male",
     },
   ];
-  const [classTitle, setClassTitle] = useState("History 101");
+  const [classTitle, setClassTitle] = useState("");
   const [gender, setGender] = useState("male");
   const [data, setData] = useState([]);
 
+  const axios = require('axios');
+  const [classObj, setClassObj] = useState(null);
+
   useEffect(() => {
-    setData(testData);
+    console.log("lfskdjfds");
+    const url = new URL("http://localhost:8080/classes/read");
+
+    axios.get(url)
+    .then(function (response) {
+      //console.log(response);
+      var classItem = null;
+      for (var i = 0; i < response.data.length; i++) {
+        if (response.data[i].id === classID.classid) {
+          classItem = response.data[i];
+        }
+      }
+      setClassObj(classItem);
+    })
+    .catch(function (error) {
+        console.log(error);
+    })
   }, []);
 
   const onDelete = (e) => {
@@ -62,37 +84,42 @@ const Class = () => {
 
   return (
     <div className="mainDisplay">
-      <h1>{classTitle}</h1>
+      {classObj !== null && 
+        <div>
+          <h1>{classObj.Title}</h1>
 
-      <div
-        className="teachers-container"
-        style={{ display: "flex", flexDirection: "column" }}
-      >
-        <h3 style={{ color: "#0066B3" }}>INSTRUCTORS</h3>
-        <Link href="#" color="inherit">
-          Teacher 1
-        </Link>
-        <Link href="#" color="inherit">
-          Teacher 2
-        </Link>
-        <Link href="#" color="inherit">
-          Teacher 2
-        </Link>
-      </div>
+          <div
+            className="teachers-container"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <h3 style={{ color: "#0066B3" }}>INSTRUCTOR</h3>
+            <p>{classObj.Teacher}</p>
+            {/*<Link href="#" color="inherit">
+              Teacher 1
+            </Link>
+            <Link href="#" color="inherit">
+              Teacher 2
+            </Link>
+            <Link href="#" color="inherit">
+              Teacher 2
+      </Link>*/}
+          </div>
 
-      <div className="students-container">
-        <h3 style={{ color: "#0066B3" }}>STUDENTS</h3>
-        {data.map((s) => {
-          return (
-            <Student
-              name={s.name}
-              grade={s.grade}
-              onDelete={onDelete}
-              onAdd={onAdd}
-            />
-          );
-        })}
-      </div>
+          <div className="students-container">
+            <h3 style={{ color: "#0066B3" }}>STUDENTS</h3>
+            {classObj.Students.map((s) => {
+              return (
+                <Student
+                  name={s}
+                  //grade={s.gradeLevel}
+                  onDelete={onDelete}
+                  onAdd={onAdd}
+                />
+              );
+            })}
+          </div>
+        </div>
+    }
     </div>
   );
 };

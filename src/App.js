@@ -5,14 +5,14 @@ import CalendarApp from "./components/Calendar.js";
 import Dashboard from "./components/Dashboard";
 import Homepage from "./components/Homepage";
 import Class from "./components/Class";
-
-import {BrowserRouter as Router} from 'react-router-dom';
+import ClassCreate from "./components/ClassCreate";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
     <div>
       <Router>
-        <Dashboard/>
+        <Dashboard></Dashboard>
       </Router>
     </div>
   );
