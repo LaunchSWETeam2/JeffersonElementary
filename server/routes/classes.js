@@ -58,6 +58,16 @@ router.post("/update/:query", async (req, res) => {
     const resp2 = await classRef.update({ Subject: val });
   } else if (type === "Students") {
     const resp3 = await classRef.update({ Students: val });
+  } else if (type === "End") {
+    const resp2 = await classRef.update({ End: val });
+  } else if (type === "Start") {
+    const resp3 = await classRef.update({ Start: val });
+  } else if (type === "ID") {
+    const resp2 = await classRef.update({ ID: val });
+  } else if (type === "Classroom") {
+    const resp3 = await classRef.update({ Classroom: val });
+  } else if (type === "Title") {
+    const resp3 = await classRef.update({ Title: val });
   }
   res.send("Update");
 });
