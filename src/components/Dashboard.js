@@ -1,5 +1,5 @@
 //code based on https://material-ui.com/components/drawers/
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
 import {
     Button,
@@ -35,6 +35,11 @@ import StudentDirectory from './StudentDirectory'
 import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
+//API
+import axios from 'axios';
+
+
+const FACE_API_KEY = process.env.REACT_APP_FACE_API_KEY;
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
@@ -106,9 +111,15 @@ export default function MiniDrawer() {
   const [open, setOpen] = React.useState(false);
   const history = useHistory();
 
+  const [allFaces, setAllFaces] = useState([])//for preloading face images
+
   const fontStyle={
       fontWeight:"bold"
   }
+
+  useEffect(()=>{
+    fetchFaces()
+  }, [])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -117,6 +128,23 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const fetchFaces = () =>{
+    const url = new URL("https://api.generated.photos/api/v1/faces");
+    url.searchParams.append('api_key', FACE_API_KEY)
+    url.searchParams.append("order_by", 'random')
+    url.searchParams.append('per_page', 100)
+    url.searchParams.append('age','young-adult')
+    console.log(url.toString())
+    axios.get(url)
+        .then(response=>{
+            const faces = response.data.faces//[0].urls[4]["512"]
+            setAllFaces(faces)
+        })
+        .catch(err=>{
+            console.log("Fetch Face Error: ", err)
+        })
+}
 
   return (
     
@@ -198,7 +226,9 @@ export default function MiniDrawer() {
           <div className={classes.toolbar} />
           <div>
             <Switch>
-              <Route exact path='/teacherspage' exact component={TeacherDirectory}/>
+              <Route exact path='/teacherspage'>
+                <TeacherDirectory allFaces={allFaces}/>
+              </Route>
               <Route exact path='/studentspage' component={StudentDirectory}/>
               <Route exact path='/classespage' component={ClassDirectory}/>
               <Route exact path='/calendarpage' component={Calendar}/>
