@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Button, TextField } from "@material-ui/core";
+import { Button, ButtonGroup, TextField } from "@material-ui/core";
 
 const EditStudent = ({ onAdd, onDelete, setStudentName, setNewGrade }) => {
   const [input, setInput] = useState("");
   const [gradeInput, setGradeInput] = useState("");
+  const [errorMessage, setErrorMessage] = useState("Make changes below.");
+  const [successChange, setSuccessChange] = useState(false);
 
   const onSave = (e) => {
     e.preventDefault();
@@ -18,8 +20,11 @@ const EditStudent = ({ onAdd, onDelete, setStudentName, setNewGrade }) => {
           gradeInput == "F")
       ) {
         setNewGrade(gradeInput);
+        setSuccessChange(true);
+        setErrorMessage("Updated!");
       } else {
-        alert("Enter a valid grade");
+        setSuccessChange(false);
+        setErrorMessage("ERROR: Please enter a valid grade");
       }
       setInput("");
       setGradeInput("");
@@ -35,6 +40,7 @@ const EditStudent = ({ onAdd, onDelete, setStudentName, setNewGrade }) => {
         alignItems: "center",
       }}
     >
+      <p>{errorMessage}</p>
       <TextField
         placeholder="Edit name"
         value={input}
@@ -43,17 +49,28 @@ const EditStudent = ({ onAdd, onDelete, setStudentName, setNewGrade }) => {
         }}
       />
       <TextField
+        style={{ marginBottom: "10px" }}
         placeholder="Edit grade"
         value={gradeInput}
         onChange={(e) => {
           setGradeInput(e.target.value);
         }}
       />
-      <span className="edit-buttons">
-        <Button onClick={onSave}>Save</Button>
-        <Button onClick={onAdd}>Add</Button>
-        <Button onClick={onDelete}>Delete</Button>
-      </span>
+      <ButtonGroup size="small" aria-label="small outlined button group">
+        <Button
+          style={{ background: "green", color: "white" }}
+          onClick={onSave}
+        >
+          Save
+        </Button>
+        {/* <Button onClick={onAdd}>Add</Button> */}
+        <Button
+          onClick={onDelete}
+          style={{ background: "red", color: "white" }}
+        >
+          Delete
+        </Button>
+      </ButtonGroup>
     </div>
   );
 };

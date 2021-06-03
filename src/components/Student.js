@@ -22,7 +22,7 @@ const Student = ({ name, grade, onDelete, onAdd }) => {
         }}
       >
         {/* <p style={{ width: "20%", textAlign: "left" }}>{name}&nbsp;&nbsp;</p> */}
-        <p style={{ width: "10%", textAlign: "left" }}>
+        <p style={{ width: "15%", textAlign: "left" }}>
           {studentName}&nbsp;&nbsp;
         </p>
         {/* <p style={{ width: "10%" }}>{grade}&nbsp;&nbsp;</p> */}
@@ -39,7 +39,7 @@ const Student = ({ name, grade, onDelete, onAdd }) => {
           </Button>
         ) : (
           <Button
-            style={{ background: "green", color: "white" }}
+            style={{ background: "#0066B3", color: "white" }}
             onClick={() => {
               setToggle(!toggle);
             }}
