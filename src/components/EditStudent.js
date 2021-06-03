@@ -56,7 +56,11 @@ const EditStudent = ({ onAdd, onDelete, setStudentName, setNewGrade }) => {
           setGradeInput(e.target.value);
         }}
       />
-      <ButtonGroup size="small" aria-label="small outlined button group">
+      <ButtonGroup
+        size="small"
+        aria-label="small outlined button group"
+        style={{ marginBottom: "10px" }}
+      >
         <Button
           style={{ background: "green", color: "white" }}
           onClick={onSave}
