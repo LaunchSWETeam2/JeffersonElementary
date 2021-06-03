@@ -180,6 +180,7 @@ export default function MiniDrawer() {
         </Toolbar>
       </AppBar>
       <Drawer
+        style={{ backgroundColor: "#FFBC19" }}
         variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
@@ -192,7 +193,7 @@ export default function MiniDrawer() {
           }),
         }}
       >
-        <div className={classes.toolbar}>
+        <div className={classes.toolbar} style={{ backgroundColor: "#FFBC19" }}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
