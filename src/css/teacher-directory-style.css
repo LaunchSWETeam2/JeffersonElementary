@@ -1,0 +1,119 @@
+:root {
+  --main-bg-color: #0066b3;
+  --main-font-color: white;
+  --main-font-weight: bold;
+}
+.color-theme {
+  background-color: var(--main-bg-color);
+  color: var(--main-font-color);
+  font-weight: var(--main-font-weight);
+}
+
+.teacher-directory {
+  font-family: Helvetica;
+}
+
+.student-directory {
+  font-family: Helvetica;
+}
+
+.td__header {
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.td__controller {
+  display: flex;
+  justify-content: space-between;
+  /* background-color: yellow; */
+}
+.td__controller__search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.td__table {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+.td__table__columns {
+  display: flex;
+  justify-items: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.spacer {
+  height: 100%;
+  width: 70px;
+}
+
+.column-label {
+  font-size: 15px;
+  flex: 50%;
+  /* text-align: center; */
+}
+
+/* Teacher Accordion Styling */
+.accordion-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background-color: pink;
+}
+.accordion-details {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-left: 20px;
+  font-size: 13px;
+}
+h4 {
+  margin: 3px;
+  font-weight: lighter;
+  color: rgb(85, 85, 85);
+}
+/* Class Directory Specific styling */
+.class-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.class-title-container {
+  flex: 50%;
+  flex-grow: 0;
+}
+.class-title-button-container {
+  margin: 1px;
+}
+
+/* Teacher Dialog Styling */
+.dialog-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.dialog-form-element {
+  padding: 10px;
+  flex: 30%;
+}
+
+.full {
+  flex: 100%;
+}
