@@ -3,7 +3,12 @@ import Input from "@material-ui/core/Input";
 import { CallMissedOutgoingOutlined } from "@material-ui/icons";
 import React, { useRef, useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Select from "@material-ui/core/Select";
 function ClassCreate() {
   const [teacher, setTeacher] = useState("");
   const [students, setStudents] = useState([]);
@@ -21,6 +26,45 @@ function ClassCreate() {
   const [id, setID] = useState("");
   const [classNum, setClassNum] = useState("");
   const [classTitle, setClassTitle] = useState("");
+  const [open, setOpen] = React.useState(false);
+  const [openU, setOpenU] = React.useState(false);
+  const [openD, setOpenD] = React.useState(false);
+  const [typeList, setTypeList] = useState([]);
+
+  const handleClickOpen = () => {
+    if (teacherList.length === 0) {
+      fetchTeachers();
+    }
+    if (studentList.length === 0) {
+      fetchStudents();
+    }
+    setOpen(true);
+  };
+  const handleClickOpenU = () => {
+    if (typeList.length === 0) {
+      typeList.push("Teacher");
+      typeList.push("Subject");
+      typeList.push("Start");
+      typeList.push("End");
+      typeList.push("ID");
+      typeList.push("Classroom");
+      typeList.push("Title");
+    }
+
+    setOpenU(true);
+  };
+  const handleClickOpenD = () => {
+    setOpenD(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleCloseU = () => {
+    setOpenU(false);
+  };
+  const handleCloseD = () => {
+    setOpenD(false);
+  };
   const handleChange = (e) => {
     setTeacher(e.currentTarget.value);
   };
@@ -201,115 +245,145 @@ function ClassCreate() {
 
   return (
     <div>
-      <form>
-        <select onChange={handleChangeStudent}>
-          {studentList.map((student) => {
-            return <option value={student.name}> {student.name} </option>;
-          })}
-        </select>
-        <Button onClick={() => addStudent()}>Add Student</Button>
-        <p>
-          Students:
-          {students.map((c) => (
-            <p>{c}</p>
-          ))}
-        </p>
-        <Button onClick={() => fetchStudents()}>Fetch Students</Button>
-      </form>
-      <form>
-        <select onChange={handleChange}>
-          {teacherList.map((teacher) => {
-            return <option value={teacher.name}> {teacher.name} </option>;
-          })}
-        </select>
+      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        Add Class
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <form>
+          <Select onChange={handleChangeStudent}>
+            {studentList.map((student) => {
+              return <option value={student.name}> {student.name} </option>;
+            })}
+          </Select>
+          <Button onClick={() => addStudent()}>Add Student</Button>
+          <p>
+            Students:
+            {students.map((c) => (
+              <p>{c}</p>
+            ))}
+          </p>
+        </form>
+        <form>
+          <Select onChange={handleChange}>
+            {teacherList.map((teacher) => {
+              return <option value={teacher.name}> {teacher.name} </option>;
+            })}
+          </Select>
 
-        <input
-          name="subject"
-          placeholder="Subject"
-          value={subject}
-          onChange={handleChangeSubject}
-        />
+          <Input
+            name="subject"
+            placeholder="Subject"
+            value={subject}
+            onChange={handleChangeSubject}
+          />
 
-        <input
-          start="start"
-          placeholder="Start Date"
-          value={start}
-          onChange={handleChangeStart}
-        />
-        <input
-          name="end"
-          placeholder="End Date"
-          value={end}
-          onChange={handleChangeEnd}
-        />
-        <input
-          name="title"
-          placeholder="Class Title"
-          value={classTitle}
-          onChange={handleChangeClassTitle}
-        />
-        <input
-          name="id"
-          placeholder="Class ID"
-          value={id}
-          onChange={handleChangeID}
-        />
-        <input
-          name="num"
-          placeholder="Class Room Number"
-          value={classNum}
-          onChange={handleChangeClassNum}
-        />
-        <Button
-          onClick={() =>
-            createClasses(
-              teacher,
-              subject,
-              students,
-              start,
-              end,
-              id,
-              classNum,
-              classTitle
-            )
-          }
-        >
-          Add Class
-        </Button>
-      </form>
-      <Button onClick={() => fetchTeachers()}>Fetch Teachers</Button>
-      <form>
-        <input
-          name="ID_Val"
-          placeholder="ID of class that Should Be Updated"
-          value={updateTitle}
-          onChange={handleChangeUpdate}
-        />
-        <input
-          name="field"
-          placeholder="Field to update (Teacher, Subject, Studnets, Start, End)"
-          value={updateType}
-          onChange={handleChangeType}
-        />
-        <input
-          name="newVal"
-          placeholder="What should it be set to?"
-          value={updateVal}
-          onChange={handleChangeUpdateVal}
-        />
-        <Button onClick={() => updateClasses()}>Update Class</Button>
-      </form>
-      <form>
-        <input
-          name="delete"
-          placeholder="ID of class to delete"
-          value={deleteVal}
-          onChange={handleChangeDelete}
-        />
-        <Button onClick={() => deleteClass()}>Delete Class</Button>
-      </form>
-
-      <Button onClick={handleSubmitClasses}>Display Classes</Button>
+          <Input
+            start="start"
+            placeholder="Start Date"
+            value={start}
+            onChange={handleChangeStart}
+          />
+          <Input
+            name="end"
+            placeholder="End Date"
+            value={end}
+            onChange={handleChangeEnd}
+          />
+          <Input
+            name="title"
+            placeholder="Class Title"
+            value={classTitle}
+            onChange={handleChangeClassTitle}
+          />
+          <Input
+            name="id"
+            placeholder="Class ID"
+            value={id}
+            onChange={handleChangeID}
+          />
+          <Input
+            name="num"
+            placeholder="Class Room Number"
+            value={classNum}
+            onChange={handleChangeClassNum}
+          />
+          <Button
+            onClick={() =>
+              createClasses(
+                teacher,
+                subject,
+                students,
+                start,
+                end,
+                id,
+                classNum,
+                classTitle
+              )
+            }
+          >
+            Add Class
+          </Button>
+        </form>
+      </Dialog>
+      <Button variant="outlined" color="primary" onClick={handleClickOpenU}>
+        Update Class
+      </Button>
+      <Dialog
+        open={openU}
+        onClose={handleCloseU}
+        aria-labelledby="form-dialog-title"
+      >
+        <form>
+          <Input
+            name="ID_Val"
+            placeholder="ID of class to be Updated"
+            value={updateTitle}
+            onChange={handleChangeUpdate}
+          />
+          <Input
+            name="field"
+            placeholder="Field:(Teacher, Subject, Students, Start, End)"
+            value={updateType}
+            onChange={handleChangeType}
+          />
+          <Select onChange={handleChangeType}>
+            {typeList.map((type) => {
+              return <option value={type}> {type} </option>;
+            })}
+          </Select>
+          <Input
+            name="newVal"
+            placeholder="What should it be set to?"
+            value={updateVal}
+            onChange={handleChangeUpdateVal}
+          />
+          <Button onClick={() => updateClasses()}>Update Class</Button>
+        </form>
+      </Dialog>
+      <Button variant="outlined" color="primary" onClick={handleClickOpenD}>
+        Delete Class
+      </Button>
+      <Dialog
+        open={openD}
+        onClose={handleCloseD}
+        aria-labelledby="form-dialog-title"
+      >
+        <form>
+          <Input
+            name="delete"
+            placeholder="ID of class to delete"
+            value={deleteVal}
+            onChange={handleChangeDelete}
+          />
+          <Button onClick={() => deleteClass()}>Delete Class</Button>
+        </form>
+      </Dialog>
+    </div>
+    /**<Button onClick={handleSubmitClasses}>Display Classes</Button>
       <p>
         {classes.map((c) => (
           <p>
@@ -317,8 +391,7 @@ function ClassCreate() {
             {c.Classroom} With ID {c.ID}
           </p>
         ))}
-      </p>
-    </div>
+      </p> */
   );
 }
 
