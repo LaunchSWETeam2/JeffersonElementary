@@ -114,9 +114,9 @@ function ClassCreate() {
     setTeacher(val);
   };
   const fetchStudents = () => {
-    //  fetch(`http://localhost:8080/students/read`)
-    //     .then((res) => res.json())
-    //   .then((data) => setStudentList(data));
+    fetch(`http://localhost:8080/students/read`)
+      .then((res) => res.json())
+      .then((data) => setStudentList(data)); /*
     var temp = [];
     var stud = {
       name: "John Johny",
@@ -130,7 +130,7 @@ function ClassCreate() {
       name: "Rocky Balboa",
     };
     temp.push(stud3);
-    setStudentList(temp);
+    setStudentList(temp);*/
   };
   const fetchTeachers = () => {
     fetch(`http://localhost:8080/teachers/read`)
