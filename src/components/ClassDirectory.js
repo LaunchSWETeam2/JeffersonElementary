@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../css/teacher-directory-style.css";
 import ClassCreate from "./ClassCreate";
 import {
@@ -121,6 +121,24 @@ function ClassDirectory() {
     borderRadius: "10px",
     padding: "5px",
   };
+
+  const axios = require('axios');
+  const [classList, setClassList] = useState([]);
+
+  useEffect(() => {
+      const url = new URL("http://localhost:8080/classes/read");
+
+      axios.get(url)
+      .then(function (response) {
+          setClassList(response.data);
+      })
+      .catch(function (error) {
+          console.log(error);
+      })
+      .then(function () {
+      });
+  }, []);
+
   return (
     <div className="teacher-directory">
       <h2 className="td__header">Class Directory</h2>
@@ -139,12 +157,18 @@ function ClassDirectory() {
         </div>
       </div>
       <div className="td__table">
-        {subjects.map((subject) => {
-          const classes = classData.filter(
-            (aClass) => aClass.subject === subject
-          );
-          return <ClassAccordion {...{ subject, classes }} />;
-        })}
+        {classList.length !== 0 && 
+            subjects.map((subject) => {
+                //const classes = classData.filter((aClass) => aClass.subject === subject
+                var classes = [];
+                for (var i = 0; i < classList.length; i++) {
+                    if (classList[i].Subject === subject) {
+                        classes.push(classList[i].Title);
+                    }
+                }
+                return <ClassAccordion {...{ subject, classes }} />;
+            })
+        }
       </div>
     </div>
   ); /** <ButtonGroup
@@ -191,7 +215,7 @@ function ClassAccordion({ subject, classes }) {
               return (
                 <div className="class-title-container">
                   <div className="class-title-button-container">
-                    <Button style={classButtonStyle}>{aClass.title}</Button>
+                    <Button style={classButtonStyle}>{aClass}</Button>
                   </div>
                 </div>
               );
