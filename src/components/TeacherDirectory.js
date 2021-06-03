@@ -141,8 +141,7 @@ function TeacherDirectory({allFaces}) {
                             allFaces={allFaces} 
                             setTeacherData={setTeacherData}
                             handleSnackOpen={handleSnackOpen}
-                            isUpdating={isUpdating}
-                            teacher={teacherEdit}
+                            teacherEdit={teacherEdit}
                         />
 
                         <Button onClick={toggleSelect} style={selectButtonStyle}>Select</Button>
