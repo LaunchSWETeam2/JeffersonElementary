@@ -157,12 +157,18 @@ function ClassDirectory() {
         </div>
       </div>
       <div className="td__table">
-        {subjects.map((subject) => {
-          const classes = classData.filter(
-            (aClass) => aClass.subject === subject
-          );
-          return <ClassAccordion {...{ subject, classes }} />;
-        })}
+        {classList.length !== 0 && 
+            subjects.map((subject) => {
+                //const classes = classData.filter((aClass) => aClass.subject === subject
+                var classes = [];
+                for (var i = 0; i < classList.length; i++) {
+                    if (classList[i].Subject === subject) {
+                        classes.push(classList[i].Title);
+                    }
+                }
+                return <ClassAccordion {...{ subject, classes }} />;
+            })
+        }
       </div>
     </div>
   ); /** <ButtonGroup
