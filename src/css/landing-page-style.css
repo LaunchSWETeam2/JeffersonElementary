@@ -1,0 +1,14 @@
+body {
+  /* background: #0066b3; */
+}
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-logo {
+  width: 30vw;
+  height: auto;
+}

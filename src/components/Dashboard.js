@@ -32,6 +32,7 @@ import Calendar from "./Calendar";
 import ClassDirectory from "./ClassDirectory";
 import StudentDirectory from "./StudentDirectory";
 import Class from "./Class";
+import LandingPage from "./LandingPage";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useHistory } from "react-router-dom";
@@ -259,6 +260,7 @@ export default function MiniDrawer() {
             <Route exact path="/teacherspage">
               <TeacherDirectory allFaces={allFaces} />
             </Route>
+            <Route exact path="/" component={LandingPage} />
             <Route exact path="/studentspage" component={StudentDirectory} />
             <Route exact path="/classespage" component={ClassDirectory} />
             <Route exact path="/classpage/:classid" component={Class} />
