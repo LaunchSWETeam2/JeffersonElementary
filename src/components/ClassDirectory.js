@@ -215,7 +215,7 @@ function ClassAccordion({ subject, classes }) {
               return (
                 <div className="class-title-container">
                   <div className="class-title-button-container">
-                    <Button style={classButtonStyle}>{aClass.title}</Button>
+                    <Button style={classButtonStyle}>{aClass}</Button>
                   </div>
                 </div>
               );
