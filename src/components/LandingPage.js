@@ -8,7 +8,7 @@ const LandingPage = () => {
       {/* Main landing page view */}
       <div className="landing-container">
         {/* <img src={landingImage} style={{ zIndex: "1", width: "100%" }} /> */}
-        <h1>Welcome to the Jefferson Elementary School Admin Portal</h1>
+        <h1>Welcome to the Thomas Jefferson Elementary School Admin Portal</h1>
         <img className="landing-logo" src={Logo} />
       </div>
     </div>
