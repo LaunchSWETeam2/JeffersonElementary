@@ -272,7 +272,11 @@ function ClassCreate() {
           Student:
           <Select onChange={handleChangeStudent}>
             {studentList.map((student) => {
-              return <option value={student.name}> {student.name} </option>;
+              return (
+                <option value={student.name + " " + student.id}>
+                  {student.name + " ID:" + student.id + "  "}
+                </option>
+              );
             })}
           </Select>
           <Button onClick={() => addStudent()}>Add Student</Button>
