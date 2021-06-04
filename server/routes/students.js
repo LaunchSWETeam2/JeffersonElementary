@@ -1,12 +1,3 @@
-/*var express = require("express")
-var router = express.Router();
-
-router.get("/", async (req,res)=>{
-    res.send("Students API working properly")
-})
-
-module.exports = router;*/
-
 var db = require('../firebase')
 const studentsRef = db.collection('students')
 var express = require("express")

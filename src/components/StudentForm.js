@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AgeDropdown from './AgeDropdown';
+import GradeDropDown from './GradeDropDown';
 import '../css/teacher-directory-style.css';
 import {
     Button,
@@ -22,12 +23,12 @@ import axios from 'axios';
 const subjectsModel = {math:false, history:false, science:false,
     geography:false, music:false, art:false, health:false}
 
-function StudentForm({handleClose, allFaces, setStudentData, handleSnackOpen, studentEdit}) {
+function StudentForm({handleClose, setStudentData, handleSnackOpen, studentEdit}) {
 
     const [studentForm, setStudentForm] = useState({sexValue:'female', ageValue:20, nameValue:"",
-    emailValue:"", phoneValue:"", subjects: subjectsModel})
+    emailValue:"", phoneValue:"", gradeValue:4})
 
-    const {sexValue, ageValue, nameValue, emailValue, phoneValue, subjects} = studentForm;
+    const {sexValue, ageValue, nameValue, emailValue, phoneValue, gradeValue} = studentForm;
 
     const setStudentFormValue = (attrib, newValue) =>{
         setStudentForm({...studentForm, [attrib]:newValue})
@@ -39,35 +40,36 @@ function StudentForm({handleClose, allFaces, setStudentData, handleSnackOpen, st
         const email = e.target["email-input"].value;
         const phone = e.target["phone-input"].value;
         const age = e.target["age-dropdown"].value;
-        const subjectsList = subjectsToList(subjects)
+        const grade = e.target["grade-dropdown"].value;
+        //const subjectsList = subjectsToList(subjects)
         const sex = sexValue;
-        const facesList = allFaces.filter((face)=>face.meta.gender[0] === sexValue);
-        const randomFaceURL = (facesList.length > 0) && facesList[Math.floor(Math.random() * facesList.length)].urls[4]["512"];
+        //const facesList = allFaces.filter((face)=>face.meta.gender[0] === sexValue);
+        //const randomFaceURL = (facesList.length > 0) && facesList[Math.floor(Math.random() * facesList.length)].urls[4]["512"];
         //this is poor practice: must have some sort of model that can be reused. Serves as a template
         const studentObj = {
             age:age,
             contact:{email:email, phone:phone},
             gender:sex,
             name:name,
-            subjects:subjectsList,
+            gradeLevel:grade,
         }
 
  
-        studentPOST({...studentObj, image:randomFaceURL}) 
+        studentPOST({...studentObj}) 
         //clean up
-        const subjectsReset = {...subjects};
+        /*const subjectsReset = {...subjects};
         Object.keys(subjects).forEach(subject=>{
             subjectsReset[subject] = false;
-        })
+        })*/
         // setSubjects(subjectsReset)
-        setStudentFormValue("subjects", subjectsReset)
+        //setStudentFormValue("subjects", subjectsReset)
         setStudentData(data=> data.concat([studentObj]))//update view
         handleClose()
     }
 
 
     const handleSelect = (e) =>{
-        setStudentFormValue("subjects", {...subjects, [e.target.name]:e.target.checked})
+        //setStudentFormValue("subjects", {...subjects, [e.target.name]:e.target.checked})
         // setSubjects({...subjects, [e.target.name]:e.target.checked})
     }
     const handleSexSelect = (e)=>{
@@ -126,6 +128,9 @@ function StudentForm({handleClose, allFaces, setStudentData, handleSnackOpen, st
                         <MuiPhoneNumber id="phone-input" defaultCountry={'us'} value={phoneValue}/>
                     </div>
                     <div className="dialog-form-element">
+                        <GradeDropDown grade={gradeValue}/>     
+                    </div>
+                    <div className="dialog-form-element">
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Sex</FormLabel>
                             <RadioGroup  id="sex-selector" value={sexValue} onChange={handleSexSelect}>
@@ -134,7 +139,7 @@ function StudentForm({handleClose, allFaces, setStudentData, handleSnackOpen, st
                             </RadioGroup>
                         </FormControl>
                     </div>
-                    <div className="dialog-form-element">
+                    {/* <div className="dialog-form-element">
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Select Subjects</FormLabel>
                             <FormGroup>
@@ -154,7 +159,7 @@ function StudentForm({handleClose, allFaces, setStudentData, handleSnackOpen, st
                                 </div>
                             </FormGroup>
                         </FormControl>
-                    </div>
+                    </div> */}
                 </div>
             </DialogContent>
             <DialogActions>

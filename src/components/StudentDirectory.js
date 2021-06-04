@@ -18,7 +18,7 @@ import axios from 'axios';
 const darkBlue = "#004981";
 const lightBlue = "#6ea8d4";
 
-function StudentDirectory({allFaces}) {
+function StudentDirectory() {
     const [studentData, setStudentData] = useState([])
     const [openForm, setOpenForm] = useState(false)
 
@@ -138,7 +138,7 @@ function StudentDirectory({allFaces}) {
                         <StudentDialog 
                             open={openForm} 
                             handleClose={handleCloseForm} 
-                            allFaces={allFaces} 
+                            //allFaces={allFaces} 
                             setStudentData={setStudentData}
                             handleSnackOpen={handleSnackOpen}
                             studentEdit={studentEdit}
@@ -158,7 +158,7 @@ function StudentDirectory({allFaces}) {
                 <div className="td__table">
                     <div className="td__table__columns color-theme">
                         <div className="column-label">Name</div>
-                        <div className="column-label">Subject(s)</div>
+                        <div className="column-label">Grade Level</div>
                         <div className="spacer"/>
                     </div>
                     {

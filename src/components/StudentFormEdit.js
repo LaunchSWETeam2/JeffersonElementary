@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AgeDropdown from './AgeDropdown';
+import GradeDropDown from './GradeDropDown';
 import '../css/teacher-directory-style.css';
 import {
     Button,
@@ -25,9 +26,9 @@ const subjectsModel = {math:false, history:false, science:false,
 function StudentFormEdit({handleClose, setStudentData, handleSnackOpen, studentEdit}) {
 
     const [studentForm, setStudentForm] = useState({sexValue:studentEdit.gender, ageValue:studentEdit.age, nameValue:studentEdit.name,
-    emailValue:studentEdit.contact.email, phoneValue:studentEdit.contact.phone, subjects: studentEdit.subjects})
+    emailValue:studentEdit.contact.email, phoneValue:studentEdit.contact.phone, gradeValue:studentEdit.gradeLevel})
 
-    const {sexValue, ageValue, nameValue, emailValue, phoneValue, subjects} = studentForm;
+    const {sexValue, ageValue, nameValue, emailValue, phoneValue, gradeValue} = studentForm;
 
     const setStudentFormValue = (attrib, newValue) =>{
         setStudentForm({...studentForm, [attrib]:newValue})
@@ -39,7 +40,8 @@ function StudentFormEdit({handleClose, setStudentData, handleSnackOpen, studentE
         const email = e.target["email-input"].value;
         const phone = e.target["phone-input"].value;
         const age = e.target["age-dropdown"].value;
-        const subjectsList = subjects.map(subject => subject.charAt(0).toUpperCase()+subject.slice(1));;
+        const grade = e.target["grade-dropdown"].value;
+        //const subjectsList = subjects.map(subject => subject.charAt(0).toUpperCase()+subject.slice(1));;
         const sex = sexValue;
         //this is poor practice: must have some sort of model that can be reused. Serves as a template
         const studentObj = {
@@ -47,21 +49,22 @@ function StudentFormEdit({handleClose, setStudentData, handleSnackOpen, studentE
             contact:{email:email, phone:phone},
             gender:sex,
             name:name,
-            subjects:subjectsList
+            gradeLevel:grade
+            //subjects:subjectsList
         }
 
         studentPUT({...studentObj, id:studentEdit.id})
     
         //clean up
-        const subjectsReset = {...subjects};
+        /*const subjectsReset = {...subjects};
         Object.keys(subjects).forEach(subject=>{
             subjectsReset[subject] = false;
-        })
+        })*/
         // setSubjects(subjectsReset)
-        setStudentFormValue("subjects", subjectsReset)
+        //setStudentFormValue("subjects", subjectsReset)
         setStudentData(data=> data.map(student=>{
             if(student.id ===studentEdit.id){
-                return {...studentObj, image:studentEdit.image};
+                return {...studentObj};
             }
             return student;
         }))//update view
@@ -70,26 +73,26 @@ function StudentFormEdit({handleClose, setStudentData, handleSnackOpen, studentE
 
 
     const handleSelect = (e) =>{
-        if(e.target.checked === true){
+        /*if(e.target.checked === true){
             setStudentFormValue("subjects", subjects.concat([e.target.name.toLowerCase()]))
         }
         else{
             setStudentFormValue("subjects", subjects.filter(subject => subject.toLowerCase() !==e.target.name.toLowerCase()))
-        }
+        }*/
     }
     const handleSexSelect = (e)=>{
         setStudentFormValue("sexValue", e.target.value)
     }
 
     const listToSubjects = (subjectsList)=>{
-        let subjectsJSON = { ...subjectsModel }
+        /*let subjectsJSON = { ...subjectsModel }
         const subjectsListLower = subjectsList.map(subject=>subject.toLowerCase())
         Object.keys(subjectsJSON).forEach(key=>{
             if(subjectsListLower.includes(key)){
                 subjectsJSON = {...subjectsJSON, [key]:true}
             }
         })
-        return subjectsJSON;
+        return subjectsJSON;*/
 
     }
 
@@ -127,6 +130,9 @@ function StudentFormEdit({handleClose, setStudentData, handleSnackOpen, studentE
                         <MuiPhoneNumber id="phone-input" defaultCountry={'us'} value={phoneValue}/>
                     </div>
                     <div className="dialog-form-element">
+                        <GradeDropDown grade={gradeValue}/>     
+                    </div>
+                    <div className="dialog-form-element">
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Sex</FormLabel>
                             <RadioGroup  id="sex-selector" value={sexValue} onChange={handleSexSelect}>
@@ -135,7 +141,7 @@ function StudentFormEdit({handleClose, setStudentData, handleSnackOpen, studentE
                             </RadioGroup>
                         </FormControl>
                     </div>
-                    <div className="dialog-form-element">
+                    {/* <div className="dialog-form-element">
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Select Subjects</FormLabel>
                             <FormGroup>
@@ -155,7 +161,7 @@ function StudentFormEdit({handleClose, setStudentData, handleSnackOpen, studentE
                                 </div>
                             </FormGroup>
                         </FormControl>
-                    </div>
+                    </div> */}
                 </div>
             </DialogContent>
             <DialogActions>

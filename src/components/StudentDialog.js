@@ -10,7 +10,7 @@ import axios from 'axios';
 const subjectsModel = {math:false, history:false, science:false,
     geography:false, music:false, art:false, health:false}
 
-function StudentDialog({open, handleClose, allFaces, setStudentData, handleSnackOpen, studentEdit}){
+function StudentDialog({open, handleClose, setStudentData, handleSnackOpen, studentEdit}){
     // const [studentForm, setStudentForm] = useState({sexValue:'female', ageValue:20, nameValue:"",
     //                                         emailValue:"", phoneValue:"", subjects: subjectsModel})
 
@@ -25,10 +25,10 @@ function StudentDialog({open, handleClose, allFaces, setStudentData, handleSnack
             >
                 {studentEdit 
                 ?<StudentFormEdit
-                    {...{handleClose, allFaces, setStudentData, handleSnackOpen, studentEdit}}
+                    {...{handleClose, setStudentData, handleSnackOpen, studentEdit}}
                 />
                 : <StudentForm
-                    {...{handleClose, allFaces, setStudentData, handleSnackOpen}}
+                    {...{handleClose, setStudentData, handleSnackOpen}}
                  />
                 }
                 

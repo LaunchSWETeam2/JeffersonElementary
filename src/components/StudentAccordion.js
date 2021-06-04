@@ -67,12 +67,12 @@ function StudentAccordion({student, selectMode, selected,
                             }
                             {student.name}
                         </div>
-                        <div className="column-label">{student.subjects && student.subjects.join(", ")}</div>
+                        <div className="column-label">{student.gradeLevel && student.gradeLevel}</div>
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="accordion-container">
-                        <img className="profile-pic" src={student.image ? student.image : ""} />
+                        {/* <img className="profile-pic" src={student.image ? student.image : ""} /> */}
                         <div className="accordion-details">
                             <h4>Age: {student.age}</h4>
                             <h4>Gender: {student.gender}</h4>
