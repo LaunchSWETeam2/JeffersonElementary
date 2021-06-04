@@ -9,6 +9,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Select from "@material-ui/core/Select";
+import "../css/teacher-directory-style.css";
 function ClassCreate() {
   const [teacher, setTeacher] = useState("");
   const [students, setStudents] = useState([]);
@@ -310,12 +311,10 @@ function ClassCreate() {
           <Button style={baseButtonStyle} onClick={() => addStudent()}>
             Add Student
           </Button>
-          <p>
-            Students:
-            {students.map((c) => (
-              <p>{c}</p>
-            ))}
-          </p>
+          Students:
+          {students.map((c) => (
+            <p>{c}</p>
+          ))}
         </form>
         <form>
           Teacher:
