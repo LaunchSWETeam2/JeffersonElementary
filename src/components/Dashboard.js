@@ -42,11 +42,12 @@ import LandingPage from "./LandingPage";
 import Login from './Login';
 import Signup from './Signup';
 
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 //API
 import axios from "axios";
+import { RepeatRounded } from "@material-ui/icons";
 
 const FACE_API_KEY = process.env.REACT_APP_FACE_API_KEY;
 const drawerWidth = 200;
@@ -322,24 +323,48 @@ export default function MiniDrawer() {
         </List>
         <Divider />
       </Drawer>
-
+      {
+        currentUser ? <Redirect to="/login"/> : <Redirect to="/"/>
+      }
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <div>
           <Switch>
             <Route exact path="/teacherspage">
-              <TeacherDirectory allFaces={allFaces} />
+              {currentUser
+              ?<TeacherDirectory allFaces={allFaces} />
+              : <Redirect path="login"/>  
+              // couldn't figure out with wrapper for component that needs props
+              }
             </Route>
-            <Route exact path="/" component={LandingPage} />
+            {/* <Route exact path="/" component={LandingPage} /> */}
+            <PrivateRoute exact path="/" component={LandingPage}/>
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
-            <Route exact path="/studentspage" component={StudentDirectory} />
-            <Route exact path="/classespage" component={ClassDirectory} />
-            <Route exact path="/classpage/:classid" component={Class} />
-            <Route exact path="/calendarpage" component={Calendar} />
+            <PrivateRoute exact path="/studentspage" component={StudentDirectory} />
+            <PrivateRoute exact path="/classespage" component={ClassDirectory} />
+            <PrivateRoute exact path="/classpage/:classid" component={Class} />
+            <PrivateRoute exact path="/calendarpage" component={Calendar} />
           </Switch>
         </div>
       </main>
     </div>
   );
+}
+
+function PrivateRoute({component: Component, ...rest}){
+  const { currentUser } = useAuth();
+  return(
+    <Route
+      {...rest}
+      render={props=>
+        currentUser?<Component {...props}/>
+        : <Redirect to={{
+          pathname:"/login",
+          state:{from:props.location}
+        }}/>
+      }
+    />
+  )
+
 }

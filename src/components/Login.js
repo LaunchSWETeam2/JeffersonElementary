@@ -63,6 +63,7 @@ export default function Login() {
       console.log("Failed to login. Error: ", err)
     }
     setLoading(false)
+    history.push("/")
   }
   return (
       <Container maxWidth="xs">
