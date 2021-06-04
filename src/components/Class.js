@@ -44,10 +44,23 @@ const Class = () => {
 
   const fetchAllStudents = () =>{
     const url = new URL("http://localhost:8080/students/read");
+    const url2 = new URL("http://localhost:8080/classes/read");
+
     axios.get(url)
-      .then((response)=>{
-        setAllStudents(response.data)
-        console.log(response.data)
+      .then((studentResponse)=>{
+        axios.get(url2)
+          .then((classResponse)=>{
+            const studentIds = classResponse.data.filter((c)=>c.id === classID.classid)[0]
+            console.log(classResponse.data)
+            console.log(classID)
+            if(studentIds){
+              const allStudents = studentResponse.data
+              const students = getStudentsFromIds(studentIds.StudentIDs,allStudents)
+              setAllStudents(students)
+            }
+          })
+        // setAllStudents(response.data)
+        // console.log(response.data)
       })
       .catch(err=>{
         console.log("Error fetching students: ", err)
