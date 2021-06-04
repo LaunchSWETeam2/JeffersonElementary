@@ -200,7 +200,7 @@ export default function MiniDrawer() {
           </IconButton>
           <img className="appbar__logo" src={Logo} />
           <Typography style={fontStyle} className="appbar__title" variant="h6">
-            T.J Elementary School Admin Dashboard
+            T.J. Elementary School Admin Dashboard
           </Typography>
           {!currentUser
           ? <Button onClick={()=>{history.push('/login')}} style={fontStyle} className="appbar__login" color="inherit">
