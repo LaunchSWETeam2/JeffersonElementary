@@ -32,7 +32,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        tjelementary.edu
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -73,29 +73,19 @@ const LandingPage = () => {
               color: "#FFF8DC",
               paddingLeft: "30px",
               paddingRight: "30px",
+              top: "10px",
             }}
           >
-            At the Thomas Jefferson Elementary School, we are a diverse
-            community of global citizens and lifelong learners that lead by
-            example. We believe in the power of positivity, respect, and
-            cooperation. We manifest our potential through confidence and work
-            ethic. <br />
+            At Thomas Jefferson Elementary School, we are a diverse community of
+            global citizens and lifelong learners that lead by example. We
+            believe in the power of positivity, respect, and cooperation. We
+            manifest our potential through confidence and work ethic. <br />
             <br />
             Here at Jefferson, we value Positivity, Respect, Diversity,
             Education, and Comradery.
           </h1>
         </Paper>
       </div>
-      <footer className={classes.footer}>
-        <Container maxWidth="sm">
-          <Typography variant="body1">
-            1609 University Ave, Charlottesville, VA 22903 <br />
-            434-293-4402 <br />
-            contactus@tjes.edu
-          </Typography>
-          <Copyright />
-        </Container>
-      </footer>
     </div>
   );
 };
