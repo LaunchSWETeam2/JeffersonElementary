@@ -9,6 +9,7 @@ import {
     Snackbar 
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
 
 import axios from 'axios';
 //To do extra:
@@ -20,6 +21,7 @@ const lightBlue = "#6ea8d4";
 
 function StudentDirectory() {
     const [studentData, setStudentData] = useState([])
+    const [sortAscending, setSortAscending] = useState(true)
     const [openForm, setOpenForm] = useState(false)
 
     //multiple select states
@@ -53,12 +55,55 @@ function StudentDirectory() {
         borderRadius:"10px",
         padding:"5px",
     }
+    const sortButtonStyle={
+        color:"white",
+        fontFamily: "Montserrat",
+        fontSize:"15px",
+        fontWeight:"bold"
+    }
+
 
     useEffect(()=>{
         fetchStudentData()
         // fetchFace()//only 50 requests. Store data while you can...
     }, [])
 
+    useEffect(()=>{
+        setStudentData(sortStudentData(studentData))   
+    },[sortAscending])
+
+    const sortStudentData = (data) =>{
+        const dataCopy = [...data]
+        if(sortAscending === true)
+            dataCopy.sort((a,b)=>{
+                let nameA = a.name.toUpperCase()
+                let nameB = b.name.toUpperCase()
+                if(nameA < nameB){
+                  return -1
+                }
+                if(nameA > nameB){
+                  return 1;
+                }
+                return 0;
+            })
+        else{
+            dataCopy.sort((a,b)=>{
+                let nameA = a.name.toUpperCase()
+                let nameB = b.name.toUpperCase()
+                if(nameA < nameB){
+                  return 1
+                }
+                if(nameA > nameB){
+                  return -1;
+                }
+                return 0;
+            })
+        }
+        return dataCopy;
+    }
+    const handleAlphaSort = () =>{
+        setSortAscending(ascending=>!ascending)
+    }
     const fetchStudentData = () =>{
         const url = new URL("http://localhost:8080/students/read");
         axios.get(url)
@@ -157,7 +202,9 @@ function StudentDirectory() {
                 </div>
                 <div className="td__table">
                     <div className="td__table__columns color-theme">
-                        <div className="column-label">Name</div>
+                        <div className="column-label">
+                            <Button onClick={handleAlphaSort} style={sortButtonStyle}><SortByAlphaIcon style={{paddingRight:10}}/> Name</Button>
+                        </div>                        
                         <div className="column-label">Grade Level</div>
                         <div className="spacer"/>
                     </div>
