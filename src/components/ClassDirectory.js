@@ -13,7 +13,7 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import {useHistory} from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 const grey = "#E5E5E5";
 const blue = "#004981";
@@ -125,22 +125,21 @@ function ClassDirectory() {
     padding: "5px",
   };
 
-  const axios = require('axios');
+  const axios = require("axios");
   const [classList, setClassList] = useState([]);
- 
 
   useEffect(() => {
-      const url = new URL("http://localhost:8080/classes/read");
+    const url = new URL("http://localhost:8080/classes/read");
 
-      axios.get(url)
+    axios
+      .get(url)
       .then(function (response) {
-          setClassList(response.data);
+        setClassList(response.data);
       })
       .catch(function (error) {
-          console.log(error);
+        console.log(error);
       })
-      .then(function () {
-      });
+      .then(function () {});
   }, []);
 
   return (
@@ -161,18 +160,17 @@ function ClassDirectory() {
         </div>
       </div>
       <div className="td__table">
-        {classList.length !== 0 && 
-            subjects.map((subject) => {
-                //const classes = classData.filter((aClass) => aClass.subject === subject
-                var classes = [];
-                for (var i = 0; i < classList.length; i++) {
-                    if (classList[i].Subject === subject) {
-                        classes.push(classList[i]);
-                    }
-                }
-                return <ClassAccordion {...{ subject, classes }} />;
-            })
-        }
+        {classList.length !== 0 &&
+          subjects.map((subject) => {
+            //const classes = classData.filter((aClass) => aClass.subject === subject
+            var classes = [];
+            for (var i = 0; i < classList.length; i++) {
+              if (classList[i].Subject === subject) {
+                classes.push(classList[i]);
+              }
+            }
+            return <ClassAccordion {...{ subject, classes }} />;
+          })}
       </div>
     </div>
   ); /** <ButtonGroup
@@ -221,11 +219,16 @@ function ClassAccordion({ subject, classes }) {
               return (
                 <div className="class-title-container">
                   <div className="class-title-button-container">
-                    <Button style={classButtonStyle} onClick={() => {
+                    <Button
+                      style={classButtonStyle}
+                      onClick={() => {
                         var path = "/classpage/";
                         path = path.concat(aClass.id);
                         history.push(path);
-                    }}>{aClass.Title}</Button>
+                      }}
+                    >
+                      {aClass.Title} ID:{aClass.ID}
+                    </Button>
                   </div>
                 </div>
               );

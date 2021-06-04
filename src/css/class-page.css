@@ -1,0 +1,12 @@
+.title {
+  font-family: "Montserrat";
+  font-weight: bold;
+}
+h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 25px;
+}
+.label {
+  color: #0066b3;
+}
