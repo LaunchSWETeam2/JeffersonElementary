@@ -1,0 +1,11 @@
+.login-fail {
+  background-color: rgb(235, 85, 85);
+  color: black;
+  font-size: 20px;
+  padding: 10px;
+  width: 100%;
+  margin: 10px;
+  border-radius: 30px;
+  text-align: center;
+  font-family: "Montserrat";
+}

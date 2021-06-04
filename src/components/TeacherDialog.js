@@ -10,11 +10,9 @@ import axios from 'axios';
 const subjectsModel = {math:false, history:false, science:false,
     geography:false, music:false, art:false, health:false}
 
-function TeacherDialog({open, handleClose, allFaces, setTeacherData, handleSnackOpen, teacherEdit}){
-    // const [teacherForm, setTeacherForm] = useState({sexValue:'female', ageValue:20, nameValue:"",
-    //                                         emailValue:"", phoneValue:"", subjects: subjectsModel})
+function TeacherDialog({open, handleClose, allFaces, setTeacherData, 
+                            handleSnackOpen, teacherEdit, handleAlphaSort}){
 
-    console.log(teacherEdit)                    
     return (
         <div>
             <Dialog
@@ -28,7 +26,7 @@ function TeacherDialog({open, handleClose, allFaces, setTeacherData, handleSnack
                     {...{handleClose, allFaces, setTeacherData, handleSnackOpen, teacherEdit}}
                 />
                 : <TeacherForm
-                    {...{handleClose, allFaces, setTeacherData, handleSnackOpen}}
+                    {...{handleClose, allFaces, setTeacherData, handleSnackOpen, handleAlphaSort}}
                  />
                 }
                 

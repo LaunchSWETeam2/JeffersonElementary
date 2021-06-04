@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AgeDropdown from './AgeDropdown';
+import GradeDropDown from './GradeDropDown';
 import '../css/teacher-directory-style.css';
 import {
     Button,
@@ -22,16 +23,15 @@ import axios from 'axios';
 const subjectsModel = {math:false, history:false, science:false,
     geography:false, music:false, art:false, health:false}
 
-function TeacherForm({handleClose, allFaces, setTeacherData, 
-                        handleSnackOpen, teacherEdit, handleAlphaSort}) {
+function StudentFormEdit({handleClose, setStudentData, handleSnackOpen, studentEdit}) {
 
-    const [teacherForm, setTeacherForm] = useState({sexValue:'female', ageValue:20, nameValue:"",
-    emailValue:"", phoneValue:"", subjects: subjectsModel})
+    const [studentForm, setStudentForm] = useState({sexValue:studentEdit.gender, ageValue:studentEdit.age, nameValue:studentEdit.name,
+    emailValue:studentEdit.contact.email, phoneValue:studentEdit.contact.phone, gradeValue:studentEdit.gradeLevel})
 
-    const {sexValue, ageValue, nameValue, emailValue, phoneValue, subjects} = teacherForm;
+    const {sexValue, ageValue, nameValue, emailValue, phoneValue, gradeValue} = studentForm;
 
-    const setTeacherFormValue = (attrib, newValue) =>{
-        setTeacherForm({...teacherForm, [attrib]:newValue})
+    const setStudentFormValue = (attrib, newValue) =>{
+        setStudentForm({...studentForm, [attrib]:newValue})
     }
 
     const handleSubmit = (e) =>{
@@ -40,75 +40,78 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
         const email = e.target["email-input"].value;
         const phone = e.target["phone-input"].value;
         const age = e.target["age-dropdown"].value;
-        const subjectsList = subjectsToList(subjects)
+        const grade = e.target["grade-dropdown"].value;
+        //const subjectsList = subjects.map(subject => subject.charAt(0).toUpperCase()+subject.slice(1));;
         const sex = sexValue;
-        const facesList = allFaces.filter((face)=>face.meta.gender[0] === sexValue);
-        const randomFaceURL = (facesList.length > 0) && facesList[Math.floor(Math.random() * facesList.length)].urls[4]["512"];
         //this is poor practice: must have some sort of model that can be reused. Serves as a template
-        const teacherObj = {
+        const studentObj = {
             age:age,
             contact:{email:email, phone:phone},
             gender:sex,
             name:name,
-            subjects:subjectsList,
+            gradeLevel:grade
+            //subjects:subjectsList
         }
 
- 
-        teacherPOST({...teacherObj, image:randomFaceURL}) 
+        studentPUT({...studentObj, id:studentEdit.id})
+    
         //clean up
-        const subjectsReset = {...subjects};
+        /*const subjectsReset = {...subjects};
         Object.keys(subjects).forEach(subject=>{
             subjectsReset[subject] = false;
-        })
+        })*/
         // setSubjects(subjectsReset)
-        setTeacherFormValue("subjects", subjectsReset)
-        setTeacherData(data=> handleAlphaSort(data.concat([teacherObj])))//update view
+        //setStudentFormValue("subjects", subjectsReset)
+        setStudentData(data=> data.map(student=>{
+            if(student.id ===studentEdit.id){
+                return {...studentObj};
+            }
+            return student;
+        }))//update view
         handleClose()
     }
 
 
     const handleSelect = (e) =>{
-        setTeacherFormValue("subjects", {...subjects, [e.target.name]:e.target.checked})
-        // setSubjects({...subjects, [e.target.name]:e.target.checked})
+        /*if(e.target.checked === true){
+            setStudentFormValue("subjects", subjects.concat([e.target.name.toLowerCase()]))
+        }
+        else{
+            setStudentFormValue("subjects", subjects.filter(subject => subject.toLowerCase() !==e.target.name.toLowerCase()))
+        }*/
     }
     const handleSexSelect = (e)=>{
-        setTeacherFormValue("sexValue", e.target.value)
-        // setSexValue(e.target.value)
-    }
-    const subjectsToList = (subjectsJSON) =>{
-        return Object.keys(subjectsJSON)
-                        .filter(key=>subjectsJSON[key] === true)
-                        .map(subject => subject.charAt(0).toUpperCase()+subject.slice(1));
+        setStudentFormValue("sexValue", e.target.value)
     }
 
     const listToSubjects = (subjectsList)=>{
-        let subjectsJSON = { ...subjectsModel }
+        /*let subjectsJSON = { ...subjectsModel }
         const subjectsListLower = subjectsList.map(subject=>subject.toLowerCase())
         Object.keys(subjectsJSON).forEach(key=>{
             if(subjectsListLower.includes(key)){
                 subjectsJSON = {...subjectsJSON, [key]:true}
             }
         })
-        return subjectsJSON;
+        return subjectsJSON;*/
 
     }
 
-    const teacherPOST = (teacher) =>{
-            const url = new URL('http://localhost:8080/teachers/add')
-            axios.post(url, teacher)
-                .then((response)=>{
-                    handleSnackOpen("Teacher added successfully!")
-                })
-                .catch(err=>{
-                    console.log("Teacher POST error: ", err)
-                    handleSnackOpen("Failed to add teacher")
-                })
+    const studentPUT = (studentAndId) =>{
+        const url = new URL('http://localhost:8080/students/update')
+        axios.put(url, studentAndId)
+            .then(()=>{
+                handleSnackOpen("Student edited successfully!")
+            })
+            .catch(err=>{
+                console.log("Student PUT error: ", err)
+                handleSnackOpen("Failed to edit student")
+            })
     }
     
     return (
         <>
         <form onSubmit={handleSubmit}>
-            <DialogTitle id="alert-dialog-title">Add New Teacher</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Add New Student</DialogTitle>
             <DialogContent>
                 <div className="dialog-form-container">
                     <div className="dialog-form-element">
@@ -127,6 +130,9 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
                         <MuiPhoneNumber id="phone-input" defaultCountry={'us'} value={phoneValue}/>
                     </div>
                     <div className="dialog-form-element">
+                        <GradeDropDown grade={gradeValue}/>     
+                    </div>
+                    <div className="dialog-form-element">
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Sex</FormLabel>
                             <RadioGroup  id="sex-selector" value={sexValue} onChange={handleSexSelect}>
@@ -135,18 +141,18 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
                             </RadioGroup>
                         </FormControl>
                     </div>
-                    <div className="dialog-form-element">
+                    {/* <div className="dialog-form-element">
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Select Subjects</FormLabel>
                             <FormGroup>
                                 <div className="dialog-form-element">
                                     {
-                                        Object.keys(subjects).map((key)=>{
+                                        Object.keys(listToSubjects(subjects)).map((key)=>{
                                             return(
                                                 <FormControlLabel
                                                     key={key}
                                                     style={{width:"45%"}}
-                                                    control={<Checkbox checked={subjects[key]} onChange={handleSelect} name={key} />}
+                                                    control={<Checkbox checked={listToSubjects(subjects)[key]} onChange={handleSelect} name={key} />}
                                                     label={key.charAt(0).toUpperCase() + key.slice(1)}
                                                 />
                                             )
@@ -155,7 +161,7 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
                                 </div>
                             </FormGroup>
                         </FormControl>
-                    </div>
+                    </div> */}
                 </div>
             </DialogContent>
             <DialogActions>
@@ -163,7 +169,7 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
                     Cancel
                 </Button>
                 <Button type="submit" color="primary" autoFocus>
-                    {teacherEdit ? 'Update' : 'Add'}
+                    {studentEdit ? 'Update' : 'Add'}
                 </Button>
             </DialogActions>
         </form>
@@ -171,4 +177,4 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
     )
 }
 
-export default TeacherForm
+export default StudentFormEdit

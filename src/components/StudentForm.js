@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AgeDropdown from './AgeDropdown';
+import GradeDropDown from './GradeDropDown';
 import '../css/teacher-directory-style.css';
 import {
     Button,
@@ -22,16 +23,15 @@ import axios from 'axios';
 const subjectsModel = {math:false, history:false, science:false,
     geography:false, music:false, art:false, health:false}
 
-function TeacherForm({handleClose, allFaces, setTeacherData, 
-                        handleSnackOpen, teacherEdit, handleAlphaSort}) {
+function StudentForm({handleClose, setStudentData, handleSnackOpen, studentEdit}) {
 
-    const [teacherForm, setTeacherForm] = useState({sexValue:'female', ageValue:20, nameValue:"",
-    emailValue:"", phoneValue:"", subjects: subjectsModel})
+    const [studentForm, setStudentForm] = useState({sexValue:'female', ageValue:20, nameValue:"",
+    emailValue:"", phoneValue:"", gradeValue:4})
 
-    const {sexValue, ageValue, nameValue, emailValue, phoneValue, subjects} = teacherForm;
+    const {sexValue, ageValue, nameValue, emailValue, phoneValue, gradeValue} = studentForm;
 
-    const setTeacherFormValue = (attrib, newValue) =>{
-        setTeacherForm({...teacherForm, [attrib]:newValue})
+    const setStudentFormValue = (attrib, newValue) =>{
+        setStudentForm({...studentForm, [attrib]:newValue})
     }
 
     const handleSubmit = (e) =>{
@@ -40,39 +40,40 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
         const email = e.target["email-input"].value;
         const phone = e.target["phone-input"].value;
         const age = e.target["age-dropdown"].value;
-        const subjectsList = subjectsToList(subjects)
+        const grade = e.target["grade-dropdown"].value;
+        //const subjectsList = subjectsToList(subjects)
         const sex = sexValue;
-        const facesList = allFaces.filter((face)=>face.meta.gender[0] === sexValue);
-        const randomFaceURL = (facesList.length > 0) && facesList[Math.floor(Math.random() * facesList.length)].urls[4]["512"];
+        //const facesList = allFaces.filter((face)=>face.meta.gender[0] === sexValue);
+        //const randomFaceURL = (facesList.length > 0) && facesList[Math.floor(Math.random() * facesList.length)].urls[4]["512"];
         //this is poor practice: must have some sort of model that can be reused. Serves as a template
-        const teacherObj = {
+        const studentObj = {
             age:age,
             contact:{email:email, phone:phone},
             gender:sex,
             name:name,
-            subjects:subjectsList,
+            gradeLevel:grade,
         }
 
  
-        teacherPOST({...teacherObj, image:randomFaceURL}) 
+        studentPOST({...studentObj}) 
         //clean up
-        const subjectsReset = {...subjects};
+        /*const subjectsReset = {...subjects};
         Object.keys(subjects).forEach(subject=>{
             subjectsReset[subject] = false;
-        })
+        })*/
         // setSubjects(subjectsReset)
-        setTeacherFormValue("subjects", subjectsReset)
-        setTeacherData(data=> handleAlphaSort(data.concat([teacherObj])))//update view
+        //setStudentFormValue("subjects", subjectsReset)
+        setStudentData(data=> data.concat([studentObj]))//update view
         handleClose()
     }
 
 
     const handleSelect = (e) =>{
-        setTeacherFormValue("subjects", {...subjects, [e.target.name]:e.target.checked})
+        //setStudentFormValue("subjects", {...subjects, [e.target.name]:e.target.checked})
         // setSubjects({...subjects, [e.target.name]:e.target.checked})
     }
     const handleSexSelect = (e)=>{
-        setTeacherFormValue("sexValue", e.target.value)
+        setStudentFormValue("sexValue", e.target.value)
         // setSexValue(e.target.value)
     }
     const subjectsToList = (subjectsJSON) =>{
@@ -93,22 +94,22 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
 
     }
 
-    const teacherPOST = (teacher) =>{
-            const url = new URL('http://localhost:8080/teachers/add')
-            axios.post(url, teacher)
+    const studentPOST = (student) =>{
+            const url = new URL('http://localhost:8080/students/add')
+            axios.post(url, student)
                 .then((response)=>{
-                    handleSnackOpen("Teacher added successfully!")
+                    handleSnackOpen("Student added successfully!")
                 })
                 .catch(err=>{
-                    console.log("Teacher POST error: ", err)
-                    handleSnackOpen("Failed to add teacher")
+                    console.log("Student POST error: ", err)
+                    handleSnackOpen("Failed to add student")
                 })
     }
     
     return (
         <>
         <form onSubmit={handleSubmit}>
-            <DialogTitle id="alert-dialog-title">Add New Teacher</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Add New Student</DialogTitle>
             <DialogContent>
                 <div className="dialog-form-container">
                     <div className="dialog-form-element">
@@ -127,6 +128,9 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
                         <MuiPhoneNumber id="phone-input" defaultCountry={'us'} value={phoneValue}/>
                     </div>
                     <div className="dialog-form-element">
+                        <GradeDropDown grade={gradeValue}/>     
+                    </div>
+                    <div className="dialog-form-element">
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Sex</FormLabel>
                             <RadioGroup  id="sex-selector" value={sexValue} onChange={handleSexSelect}>
@@ -135,7 +139,7 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
                             </RadioGroup>
                         </FormControl>
                     </div>
-                    <div className="dialog-form-element">
+                    {/* <div className="dialog-form-element">
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Select Subjects</FormLabel>
                             <FormGroup>
@@ -155,7 +159,7 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
                                 </div>
                             </FormGroup>
                         </FormControl>
-                    </div>
+                    </div> */}
                 </div>
             </DialogContent>
             <DialogActions>
@@ -163,7 +167,7 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
                     Cancel
                 </Button>
                 <Button type="submit" color="primary" autoFocus>
-                    {teacherEdit ? 'Update' : 'Add'}
+                    {studentEdit ? 'Update' : 'Add'}
                 </Button>
             </DialogActions>
         </form>
@@ -171,4 +175,4 @@ function TeacherForm({handleClose, allFaces, setTeacherData,
     )
 }
 
-export default TeacherForm
+export default StudentForm

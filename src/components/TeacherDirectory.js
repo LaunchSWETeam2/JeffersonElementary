@@ -9,6 +9,7 @@ import {
     Snackbar 
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
 
 import axios from 'axios';
 //To do extra:
@@ -20,6 +21,7 @@ const lightBlue = "#6ea8d4";
 
 function TeacherDirectory({allFaces}) {
     const [teacherData, setTeacherData] = useState([])
+    const [sortAscending, setSortAscending] = useState(true)
     const [openForm, setOpenForm] = useState(false)
 
     //multiple select states
@@ -29,6 +31,7 @@ function TeacherDirectory({allFaces}) {
     //update teacher states
     const [isUpdating, setIsUpdating] = useState(false)
     const [teacherEdit, setTeacherEdit] = useState(null)
+
 
     //yummmy snacc bar
     const [snackState, setSnackState] = useState({
@@ -54,22 +57,67 @@ function TeacherDirectory({allFaces}) {
         padding:"5px",
     }
 
+    const sortButtonStyle={
+        color:"white",
+        fontFamily: "Montserrat",
+        fontSize:"15px",
+        fontWeight:"bold"
+    }
+
     useEffect(()=>{
         fetchTeacherData()
         // fetchFace()//only 50 requests. Store data while you can...
     }, [])
+
+    useEffect(()=>{
+        setTeacherData(sortTeacherData(teacherData))   
+    },[sortAscending])
 
     const fetchTeacherData = () =>{
         const url = new URL("http://localhost:8080/teachers/read");
         axios.get(url)
             .then(response=>{
                 const teacherData = response.data
-                setTeacherData(teacherData)                
+                setTeacherData(sortTeacherData(teacherData))   
             })
             .catch(err=>{
                 console.log("Fetch Teacher Error: ", err)
             })
 
+    }
+
+    const sortTeacherData = (data) =>{
+        const dataCopy = [...data]
+        if(sortAscending === true)
+            dataCopy.sort((a,b)=>{
+                let nameA = a.name.toUpperCase()
+                let nameB = b.name.toUpperCase()
+                if(nameA < nameB){
+                  return -1
+                }
+                if(nameA > nameB){
+                  return 1;
+                }
+                return 0;
+            })
+        else{
+            dataCopy.sort((a,b)=>{
+                let nameA = a.name.toUpperCase()
+                let nameB = b.name.toUpperCase()
+                if(nameA < nameB){
+                  return 1
+                }
+                if(nameA > nameB){
+                  return -1;
+                }
+                return 0;
+            })
+        }
+        return dataCopy;
+    }
+    
+    const handleAlphaSort = () =>{
+        setSortAscending(ascending=>!ascending)
     }
 
     const handleDelete = () =>{
@@ -123,7 +171,6 @@ function TeacherDirectory({allFaces}) {
         setTeacherEdit(null)
     }
 
-
     return (
         <div className="teacher-directory">
             <h2 className="td__header">Teacher Directory</h2>
@@ -142,6 +189,7 @@ function TeacherDirectory({allFaces}) {
                             setTeacherData={setTeacherData}
                             handleSnackOpen={handleSnackOpen}
                             teacherEdit={teacherEdit}
+                            handleAlphaSort={sortTeacherData}
                         />
 
                         <Button onClick={toggleSelect} style={selectButtonStyle}>Select</Button>
@@ -157,7 +205,9 @@ function TeacherDirectory({allFaces}) {
                 </div>
                 <div className="td__table">
                     <div className="td__table__columns color-theme">
-                        <div className="column-label">Name</div>
+                        <div className="column-label">
+                            <Button onClick={handleAlphaSort} style={sortButtonStyle}><SortByAlphaIcon style={{paddingRight:10}}/> Name</Button>
+                        </div>
                         <div className="column-label">Subject(s)</div>
                         <div className="spacer"/>
                     </div>
