@@ -10,6 +10,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import ButtonGroup from "@material-ui/core/Button";
+import "../css/teacher-directory-style.css";
 const localizer = momentLocalizer(moment);
 
 function CalendarApp() {
@@ -25,6 +27,25 @@ function CalendarApp() {
   const [open, setOpen] = React.useState(false);
   const [openU, setOpenU] = React.useState(false);
   const [openD, setOpenD] = React.useState(false);
+  const [selectMode, setSelectMode] = useState(false);
+  const darkBlue = "#004981";
+  const lightBlue = "#6ea8d4";
+  const baseButtonStyle = {
+    backgroundColor: darkBlue,
+    borderWidth: "0px",
+    fontWeight: "bold",
+    color: "white",
+  };
+  const selectButtonStyle = {
+    ...baseButtonStyle,
+    backgroundColor: selectMode ? lightBlue : darkBlue,
+  };
+
+  const InputStyle = {
+    backgroundColor: "#E5E5E5",
+    borderRadius: "10px",
+    padding: "5px",
+  };
   useEffect(() => {
     if (event.length === 0) {
       console.log("ohboy");
@@ -43,12 +64,15 @@ function CalendarApp() {
   };
   const handleClose = () => {
     setOpen(false);
+    fetchEvents();
   };
   const handleCloseU = () => {
     setOpenU(false);
+    fetchEvents();
   };
   const handleCloseD = () => {
     setOpenD(false);
+    fetchEvents();
   };
   const handleChange = (e) => {
     setName(e.currentTarget.value);
@@ -100,6 +124,7 @@ function CalendarApp() {
     setStart("");
     setEnd("");
     setEvents(classes);
+    fetchEvents();
   };
   const fetchEvents = () => {
     fetch(`http://localhost:8080/events/read`)
@@ -130,6 +155,7 @@ function CalendarApp() {
       .then((res) => res.json())
       .then((data) => console.log(data));
     setDelete("");
+    fetchEvents();
   };
   const updateEvent = (e) => {
     var id = deleteEvents;
@@ -141,6 +167,7 @@ function CalendarApp() {
       ) {
         id = event[i].id;
       }
+      fetchEvents();
     }
 
     fetch(`http://localhost:8080/events/update/${updateTitle}`, {
@@ -159,11 +186,12 @@ function CalendarApp() {
     setUpdateTitle("");
     setUpdateType("");
     setUpdateVal("");
+    setEvents(classes);
   };
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button style={baseButtonStyle} onClick={handleClickOpen}>
         Add Event
       </Button>
       <Dialog
@@ -173,18 +201,21 @@ function CalendarApp() {
       >
         <form>
           <Input
+            style={InputStyle}
             name="name"
             placeholder="Event Name"
             value={name}
             onChange={handleChange}
           />
           <Input
+            style={InputStyle}
             start="start"
             placeholder="Start Date"
             value={start}
             onChange={handleChangeStart}
           />
           <Input
+            style={InputStyle}
             name="end"
             placeholder="End Date"
             value={end}
@@ -195,7 +226,7 @@ function CalendarApp() {
           </Button>
         </form>
       </Dialog>
-      <Button variant="outlined" color="primary" onClick={handleClickOpenU}>
+      <Button style={baseButtonStyle} onClick={handleClickOpenU}>
         Update Event
       </Button>
       <Dialog
@@ -205,27 +236,37 @@ function CalendarApp() {
       >
         <form>
           <Input
+            style={InputStyle}
             name="delte"
             placeholder="Title "
             value={updateTitle}
             onChange={handleChangeUpdate}
           />
           <Input
+            style={InputStyle}
             name="field"
             placeholder="Field (title, start, end)"
             value={updateType}
             onChange={handleChangeType}
           />
           <Input
+            style={InputStyle}
             name="newVal"
             placeholder="New Value"
             value={updateVal}
             onChange={handleChangeUpdateVal}
           />
-          <Button onClick={() => updateEvent()}>Update Event</Button>
+          <Button style={baseButtonStyle} onClick={() => updateEvent()}>
+            Update Event
+          </Button>
         </form>
       </Dialog>
-      <Button variant="outlined" color="primary" onClick={handleClickOpenD}>
+      <Button
+        style={baseButtonStyle}
+        variant="outlined"
+        color="primary"
+        onClick={handleClickOpenD}
+      >
         Delete Event
       </Button>
       <Dialog
@@ -235,14 +276,18 @@ function CalendarApp() {
       >
         <form>
           <Input
+            style={InputStyle}
             name="delete"
             placeholder="Title of event to delete"
             value={deleteEvents}
             onChange={handleChangeDelete}
           />
-          <Button onClick={deleteEvent}>Delete Event</Button>
+          <Button style={baseButtonStyle} onClick={deleteEvent}>
+            Delete Event
+          </Button>
         </form>{" "}
       </Dialog>
+
       <Calendar
         localizer={localizer}
         events={event}
