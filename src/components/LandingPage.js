@@ -64,7 +64,7 @@ const LandingPage = () => {
               color: '#FFF8DC',
               paddingLeft: '30px',
               paddingRight: '30px',
-              top: '10px'}}>
+              paddingTop: '25px'}}>
                 At Thomas Jefferson Elementary School, we are a diverse community of global citizens and 
                 lifelong learners that lead by example. We believe in the power of positivity, respect, and 
                 cooperation. We manifest our potential through confidence and work ethic. <br/><br/>
