@@ -68,22 +68,18 @@ const LandingPage = () => {
           <h1
             style={{
               fontFamily: "Montserrat",
-              fontWeight: "bold",
-              fontSize: "30px",
-              color: "#FFF8DC",
-              paddingLeft: "30px",
-              paddingRight: "30px",
-              top: "10px",
-            }}
-          >
-            At Thomas Jefferson Elementary School, we are a diverse community of
-            global citizens and lifelong learners that lead by example. We
-            believe in the power of positivity, respect, and cooperation. We
-            manifest our potential through confidence and work ethic. <br />
-            <br />
-            Here at Jefferson, we value Positivity, Respect, Diversity,
-            Education, and Comradery.
-          </h1>
+              fontWeight: "bold", 
+              fontSize: '30px',
+              color: '#FFF8DC',
+              paddingLeft: '30px',
+              paddingRight: '30px',
+              paddingTop: '15px'}}>
+                At Thomas Jefferson Elementary School, we are a diverse community of global citizens and 
+                lifelong learners that lead by example. We believe in the power of positivity, respect, and 
+                cooperation. We manifest our potential through confidence and work ethic. <br/><br/>
+
+                Here at Jefferson, we value Positivity, Respect, Diversity, Education, and Comradery.
+            </h1>
         </Paper>
       </div>
     </div>
