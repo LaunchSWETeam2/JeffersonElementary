@@ -194,6 +194,7 @@ function CalendarApp() {
       <Button style={baseButtonStyle} onClick={handleClickOpen}>
         Add Event
       </Button>
+      &nbsp;&nbsp;&nbsp;
       <Dialog
         open={open}
         onClose={handleClose}
@@ -261,6 +262,7 @@ function CalendarApp() {
           </Button>
         </form>
       </Dialog>
+      &nbsp;&nbsp;&nbsp;
       <Button
         style={baseButtonStyle}
         variant="outlined"
@@ -287,7 +289,7 @@ function CalendarApp() {
           </Button>
         </form>{" "}
       </Dialog>
-
+      &nbsp;&nbsp;&nbsp;
       <Calendar
         localizer={localizer}
         events={event}

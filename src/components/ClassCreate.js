@@ -294,6 +294,7 @@ function ClassCreate() {
       <Button style={baseButtonStyle} onClick={handleClickOpen}>
         Add Class
       </Button>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <Dialog
         open={open}
         onClose={handleClose}
@@ -417,6 +418,7 @@ function ClassCreate() {
           </Button>
         </form>
       </Dialog>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <Button style={baseButtonStyle} onClick={handleClickOpenD}>
         Delete Class
       </Button>
