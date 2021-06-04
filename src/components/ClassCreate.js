@@ -32,6 +32,26 @@ function ClassCreate() {
   const [typeList, setTypeList] = useState([]);
   const [subjectList, setSubjectList] = useState([]);
   const [idList, setIDList] = useState([]);
+  const [selectMode, setSelectMode] = useState(false);
+  const [studentIDs, setStudentIDs] = useState([]);
+  const darkBlue = "#004981";
+  const lightBlue = "#6ea8d4";
+  const baseButtonStyle = {
+    backgroundColor: darkBlue,
+    borderWidth: "0px",
+    fontWeight: "bold",
+    color: "white",
+  };
+  const selectButtonStyle = {
+    ...baseButtonStyle,
+    backgroundColor: selectMode ? lightBlue : darkBlue,
+  };
+
+  const InputStyle = {
+    backgroundColor: "#E5E5E5",
+    borderRadius: "10px",
+    padding: "5px",
+  };
   const handleClickOpen = () => {
     if (teacherList.length === 0) {
       fetchTeachers();
@@ -60,17 +80,19 @@ function ClassCreate() {
   };
   const handleClickOpenD = () => {
     fetchIDS();
-
     setOpenD(true);
   };
   const handleClose = () => {
     setOpen(false);
+    fetchIDS();
   };
   const handleCloseU = () => {
     setOpenU(false);
+    fetchIDS();
   };
   const handleCloseD = () => {
     setOpenD(false);
+    fetchIDS();
   };
   const handleChange = (e) => {
     setTeacher(e.currentTarget.value);
@@ -95,7 +117,7 @@ function ClassCreate() {
     setSubject(e.currentTarget.value);
   };
   const handleChangeStudents = (e) => {
-    setStudents(e.currentTarget.value);
+    setStudents(e);
   };
   const handleChangeDelete = (e) => {
     setDelete(e.currentTarget.value);
@@ -113,9 +135,16 @@ function ClassCreate() {
     setClassNum(e.currentTarget.value);
   };
   const addStudent = () => {
-    // console.log(student);
+    console.log(student);
     students.push(student);
-    //  console.log(students);
+    fetchStudents();
+    console.log(studentList);
+    for (var i = 0; i < studentList.length; i++) {
+      if (studentList[i].name === student) {
+        studentIDs.push(studentList[i].id);
+        console.log(studentIDs);
+      }
+    }
   };
   const addTeacher = (val) => {
     setTeacher(val);
@@ -164,7 +193,8 @@ function ClassCreate() {
     end,
     id,
     classNum,
-    classTitle
+    classTitle,
+    studentIDs
   ) => {
     var val = {
       Teacher: teacher,
@@ -175,6 +205,7 @@ function ClassCreate() {
       ID: id,
       Classroom: classNum,
       Title: classTitle,
+      StudentIDs: studentIDs,
     };
 
     var data = JSON.stringify(val);
@@ -260,7 +291,7 @@ function ClassCreate() {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button style={baseButtonStyle} onClick={handleClickOpen}>
         Add Class
       </Button>
       <Dialog
@@ -270,16 +301,14 @@ function ClassCreate() {
       >
         <form>
           Student:
-          <Select onChange={handleChangeStudent}>
+          <Select style={selectButtonStyle} onChange={handleChangeStudent}>
             {studentList.map((student) => {
-              return (
-                <option value={student.name + " " + student.id}>
-                  {student.name + " ID:" + student.id + "  "}
-                </option>
-              );
+              return <option value={student.name}>{student.name}</option>;
             })}
           </Select>
-          <Button onClick={() => addStudent()}>Add Student</Button>
+          <Button style={baseButtonStyle} onClick={() => addStudent()}>
+            Add Student
+          </Button>
           <p>
             Students:
             {students.map((c) => (
@@ -289,48 +318,54 @@ function ClassCreate() {
         </form>
         <form>
           Teacher:
-          <Select onChange={handleChange}>
+          <Select style={selectButtonStyle} onChange={handleChange}>
             {teacherList.map((teacher) => {
               return <option value={teacher.name}> {teacher.name} </option>;
             })}
           </Select>
           Subject:
-          <Select onChange={handleChangeSubject}>
+          <Select style={selectButtonStyle} onChange={handleChangeSubject}>
             {subjectList.map((subject) => {
               return <option value={subject}> {subject} </option>;
             })}
           </Select>
           <Input
+            style={InputStyle}
             start="start"
             placeholder="Start Date (mm/dd/yyyy)"
             value={start}
             onChange={handleChangeStart}
           />
           <Input
+            style={InputStyle}
             name="end"
             placeholder="End Date (mm/dd/yyyy)"
             value={end}
             onChange={handleChangeEnd}
           />
           <Input
+            style={InputStyle}
             name="title"
             placeholder="Class Title"
             value={classTitle}
             onChange={handleChangeClassTitle}
           />
           <Input
+            style={InputStyle}
             name="id"
             placeholder="Class ID"
             value={id}
             onChange={handleChangeID}
           />
           <Input
+            style={InputStyle}
             name="num"
             placeholder="Class Room Number"
             value={classNum}
             onChange={handleChangeClassNum}
           />
           <Button
+            style={baseButtonStyle}
             onClick={() =>
               createClasses(
                 teacher,
@@ -340,7 +375,8 @@ function ClassCreate() {
                 end,
                 id,
                 classNum,
-                classTitle
+                classTitle,
+                studentIDs
               )
             }
           >
@@ -348,7 +384,7 @@ function ClassCreate() {
           </Button>
         </form>
       </Dialog>
-      <Button variant="outlined" color="primary" onClick={handleClickOpenU}>
+      <Button style={baseButtonStyle} onClick={handleClickOpenU}>
         Update Class
       </Button>
       <Dialog
@@ -358,27 +394,30 @@ function ClassCreate() {
       >
         <form>
           ID:
-          <Select onChange={handleChangeUpdate}>
+          <Select style={selectButtonStyle} onChange={handleChangeUpdate}>
             {idList.map((id) => {
               return <option value={id}> {id} </option>;
             })}
           </Select>
           Type:
-          <Select onChange={handleChangeType}>
+          <Select style={selectButtonStyle} onChange={handleChangeType}>
             {typeList.map((type) => {
               return <option value={type}> {type} </option>;
             })}
           </Select>
           <Input
+            style={InputStyle}
             name="newVal"
             placeholder="What should it be set to?"
             value={updateVal}
             onChange={handleChangeUpdateVal}
           />
-          <Button onClick={() => updateClasses()}>Update Class</Button>
+          <Button style={baseButtonStyle} onClick={() => updateClasses()}>
+            Update Class
+          </Button>
         </form>
       </Dialog>
-      <Button variant="outlined" color="primary" onClick={handleClickOpenD}>
+      <Button style={baseButtonStyle} onClick={handleClickOpenD}>
         Delete Class
       </Button>
       <Dialog
@@ -388,12 +427,14 @@ function ClassCreate() {
       >
         <form>
           ID:
-          <Select onChange={handleChangeDelete}>
+          <Select style={selectButtonStyle} onChange={handleChangeDelete}>
             {idList.map((id) => {
               return <option value={id}> {id} </option>;
             })}
           </Select>
-          <Button onClick={() => deleteClass()}>Delete Class</Button>
+          <Button style={baseButtonStyle} onClick={() => deleteClass()}>
+            Delete Class
+          </Button>
         </form>
       </Dialog>
     </div>
