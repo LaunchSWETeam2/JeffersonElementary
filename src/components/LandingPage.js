@@ -82,6 +82,15 @@ const LandingPage = () => {
             </h1>
         </Paper>
       </div>
+      <footer className={classes.footer}>
+        <Container maxWidth="sm">
+          <Typography variant="body1">
+            1609 University Ave, Charlottesville, VA 22903 <br/>
+            434-293-4402 <br/>
+            contactus@tjes.edu</Typography>
+          <Copyright />
+        </Container>
+      </footer>
     </div>
   );
 };
