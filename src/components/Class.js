@@ -109,7 +109,7 @@ const Class = () => {
                         <div className="column-label">
                             Name
                         </div>                        
-                        <div className="column-label">Grade Level</div>
+                        <div className="column-label">Course Grade</div>
                         <div className="spacer"/>
                     </div>
             {allStudents.map((s)=>{
