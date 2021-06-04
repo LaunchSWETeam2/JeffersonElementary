@@ -1,5 +1,6 @@
 //code based on https://material-ui.com/components/drawers/
 import React, { useEffect, useState } from "react";
+import { useAuth } from '../context/AuthContext';
 import clsx from "clsx";
 import {
   Button,
@@ -13,6 +14,8 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem
 } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -23,9 +26,11 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import FaceIcon from "@material-ui/icons/Face";
 import SchoolIcon from "@material-ui/icons/School";
 import HomeIcon from '@material-ui/icons/Home';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import Logo from "../images/logo.png";
 import "../css/dashboard-style.css";
+import "../css/auth-page-style.css";
 
 //Components
 import TeacherDirectory from "./TeacherDirectory";
@@ -34,7 +39,8 @@ import ClassDirectory from "./ClassDirectory";
 import StudentDirectory from "./StudentDirectory";
 import Class from "./Class";
 import LandingPage from "./LandingPage";
-import Login from './Homepage'
+import Login from './Login';
+import Signup from './Signup';
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useHistory } from "react-router-dom";
@@ -111,9 +117,10 @@ const useStyles = makeStyles((theme) => ({
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const history = useHistory();
-
+  const { currentUser, logout } = useAuth();
+  const [anchorEl, setAnchorEl] = useState(null);//for logout menu
   const [allFaces, setAllFaces] = useState([]); //for preloading face images
 
   const fontStyle = {
@@ -132,6 +139,25 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  
+  const handleLogoutClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleLogoutClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async() => {
+    handleLogoutClose()
+    try{
+      await logout()
+      history.push('/login')
+    }catch(err){
+      console.log("Logout failed. Error: ", err)
+    }
+  };
+
 
   const fetchFaces = () => {
     const url = new URL("https://api.generated.photos/api/v1/faces");
@@ -175,9 +201,36 @@ export default function MiniDrawer() {
           <Typography style={fontStyle} className="appbar__title" variant="h6">
             T.J Elementary School Admin Dashboard
           </Typography>
-          <Button onClick={()=>{history.push('/login')}} style={fontStyle} className="appbar__login" color="inherit">
+          {!currentUser
+          ? <Button onClick={()=>{history.push('/login')}} style={fontStyle} className="appbar__login" color="inherit">
             Login
           </Button>
+          
+          : <>
+            <Button onClick={handleLogoutClick} style={fontStyle} className="appbar__login" color="inherit">
+                <AccountCircleIcon style={{paddingRight:"5px"}}/> {currentUser.email}
+              </Button>
+              <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleLogoutClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+                >
+                  {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
+                  {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+            </>
+          }
         </Toolbar>
       </AppBar>
       <Drawer
@@ -279,6 +332,7 @@ export default function MiniDrawer() {
             </Route>
             <Route exact path="/" component={LandingPage} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={Signup} />
             <Route exact path="/studentspage" component={StudentDirectory} />
             <Route exact path="/classespage" component={ClassDirectory} />
             <Route exact path="/classpage/:classid" component={Class} />

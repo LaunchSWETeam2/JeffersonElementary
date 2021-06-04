@@ -22,7 +22,8 @@ import axios from 'axios';
 const subjectsModel = {math:false, history:false, science:false,
     geography:false, music:false, art:false, health:false}
 
-function TeacherForm({handleClose, allFaces, setTeacherData, handleSnackOpen, teacherEdit}) {
+function TeacherForm({handleClose, allFaces, setTeacherData, 
+                        handleSnackOpen, teacherEdit, handleAlphaSort}) {
 
     const [teacherForm, setTeacherForm] = useState({sexValue:'female', ageValue:20, nameValue:"",
     emailValue:"", phoneValue:"", subjects: subjectsModel})
@@ -61,7 +62,7 @@ function TeacherForm({handleClose, allFaces, setTeacherData, handleSnackOpen, te
         })
         // setSubjects(subjectsReset)
         setTeacherFormValue("subjects", subjectsReset)
-        setTeacherData(data=> data.concat([teacherObj]))//update view
+        setTeacherData(data=> handleAlphaSort(data.concat([teacherObj])))//update view
         handleClose()
     }
 
