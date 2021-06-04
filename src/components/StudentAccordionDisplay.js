@@ -30,7 +30,7 @@ function StudentAccordion({student}){
                         <div className="column-label">
                             {student.name}
                         </div>
-                        <div className="column-label">{student.gradeLevel && student.gradeLevel}</div>
+                        <div className="column-label">{student.grade && student.grade}</div>
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -39,9 +39,9 @@ function StudentAccordion({student}){
                         <div className="accordion-details">
                             <h4>Age: {student.age}</h4>
                             <h4>Gender: {student.gender}</h4>
-                            {/* <h4>Rating: {student.rating}</h4> */}
+                            <h4>Grade Level: {student.gradeLevel}</h4>
                             <h4>Email: {student.contact && student.contact.email}</h4>
-                            <h4>Phone: {student.contact && student.contact.phone}</h4>
+                            {/* <h4>Phone: {student.contact && student.contact.phone}</h4> */}
                         </div>
                     </div>
                 </AccordionDetails>
