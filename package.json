@@ -14,7 +14,6 @@
     "firebaseui": "^4.8.0",
     "material-ui-phone-number": "^2.2.6",
     "moment": "^2.29.1",
-    "node" :"^15.13.0",
     "nodemon": "^2.0.7",
     "react": "^17.0.2",
     "react-big-calendar": "^0.33.5",
@@ -46,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines" : {
+    "node" :"^15.13.0"
   }
 }
