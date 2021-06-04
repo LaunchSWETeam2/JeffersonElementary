@@ -34,6 +34,7 @@ import ClassDirectory from "./ClassDirectory";
 import StudentDirectory from "./StudentDirectory";
 import Class from "./Class";
 import LandingPage from "./LandingPage";
+import Login from './Homepage'
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useHistory } from "react-router-dom";
@@ -174,7 +175,7 @@ export default function MiniDrawer() {
           <Typography style={fontStyle} className="appbar__title" variant="h6">
             T.J Elementary School Admin Dashboard
           </Typography>
-          <Button style={fontStyle} className="appbar__login" color="inherit">
+          <Button onClick={()=>{history.push('/login')}} style={fontStyle} className="appbar__login" color="inherit">
             Login
           </Button>
         </Toolbar>
@@ -277,6 +278,7 @@ export default function MiniDrawer() {
               <TeacherDirectory allFaces={allFaces} />
             </Route>
             <Route exact path="/" component={LandingPage} />
+            <Route exact path="/login" component={Login} />
             <Route exact path="/studentspage" component={StudentDirectory} />
             <Route exact path="/classespage" component={ClassDirectory} />
             <Route exact path="/classpage/:classid" component={Class} />

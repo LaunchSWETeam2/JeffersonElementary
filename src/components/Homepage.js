@@ -18,9 +18,20 @@ const useStyles = makeStyles(() => ({
   form: {
     width: '100%'
   },
-  submit: {
+  login: {
       marginTop: '10px',
       marginBottom: '10px',
+      backgroundColor:"#FFBC19",
+      fontFamily: "Montserrat",
+      fontWeight:"bold",
+  },
+  signup:{
+    marginTop: '10px',
+    marginBottom: '10px',
+    backgroundColor:"#0066b3",
+    fontFamily: "Montserrat",
+    fontWeight:"bold",
+    color:"white"
   },
   logo: {
       width: '50%',
@@ -55,19 +66,17 @@ export default function Login() {
             margin="normal"
             />
             <Button
-                className={classes.submit}
+                className={classes.login}
                 type="submit"
                 variant="contained"
-                color="primary"
                 fullWidth
             >
                 Log In
             </Button>
             <Button
-                className={classes.submit}
+                className={classes.signup}
                 type="submit"
                 variant="contained"
-                color="secondary"
                 fullWidth
             >
             Sign Up
