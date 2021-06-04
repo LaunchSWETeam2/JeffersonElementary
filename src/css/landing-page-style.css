@@ -12,13 +12,13 @@
 .landing-logo {
   width: 250px;
   position: relative;
-  top: -270px;
   z-index: 2;
+  top: -100px;
 }
 .landing-title {
   font-family: "Montserrat";
   text-align: center;
-  background-color: #28282b;
+  background-color: #FFBC19;
   color: white;
   padding: 20px;
   padding-bottom: 60px;
